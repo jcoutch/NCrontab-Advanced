@@ -50,8 +50,15 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="CronInstanceTests.cs" />
+    <Compile Include="Extensions\AssertExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NCrontab.Advanced\NCrontab.Advanced.csproj">
+      <Project>{D56BC51A-E8F9-4911-8C4C-EAB2763699CD}</Project>
+      <Name>NCrontab.Advanced</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

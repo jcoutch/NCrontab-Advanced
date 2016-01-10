@@ -203,10 +203,10 @@ namespace NCrontab.Advanced.Parsers
         {
             var fields = new Dictionary<CrontabFieldKind, List<ICronFilter>>();
 
-            if (fields.Count != GetExpectedFieldCount(format))
-                throw new ArgumentException("The provided cron string has too many parameters", nameof(cron));
-
             var instructions = cron.Split(' ');
+
+            if (instructions.Length != GetExpectedFieldCount(format))
+                throw new ArgumentException("The provided cron string has too many parameters", nameof(cron));
 
             var defaultFieldOffset = 0;
             if (format == CronStringFormat.WithSeconds || format == CronStringFormat.WithSecondsAndYears)

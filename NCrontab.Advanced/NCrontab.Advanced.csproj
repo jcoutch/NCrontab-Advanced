@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Enumerations\CronFieldKind.cs" />
     <Compile Include="Enumerations\CronStringFormat.cs" />
+    <Compile Include="Exceptions\CrontabException.cs" />
     <Compile Include="Extensions\DayOfWeekExtensions.cs" />
     <Compile Include="Filters\AnyFilter.cs" />
     <Compile Include="Filters\LastDayOfMonthFilter.cs" />
