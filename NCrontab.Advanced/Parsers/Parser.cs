@@ -10,6 +10,29 @@ namespace NCrontab.Advanced.Parsers
 {
     public class CronInstance
     {
+        private static readonly Dictionary<string, string> ReplaceValues = new Dictionary<string, string>
+        {
+            {"JAN", "1"},
+            {"FEB", "2"},
+            {"MAR", "3"},
+            {"APR", "4"},
+            {"MAY", "5"},
+            {"JUN", "6"},
+            {"JUL", "7"},
+            {"AUG", "8"},
+            {"SEP", "9"},
+            {"OCT", "10"},
+            {"NOV", "11"},
+            {"DEC", "12"},
+            {"SUN", "0"},
+            {"MON", "1"},
+            {"TUE", "2"},
+            {"WED", "3"},
+            {"THU", "4"},
+            {"FRI", "5"},
+            {"SAT", "6"},
+        };
+
         public Dictionary<CrontabFieldKind, List<ICronFilter>> Filters { get; set; }
         public CronStringFormat Format { get; set; }
 
@@ -218,40 +241,43 @@ namespace NCrontab.Advanced.Parsers
 
         private static ICronFilter ParseFilter(string filter, CrontabFieldKind kind)
         {
+            // Replace all instances of text-based months/days with numbers
+            var newFilter = ReplaceValues.Aggregate(filter, (current, value) => current.Replace(value.Key, value.Value));
+
             try
             {
-                if (filter == "*") return new AnyFilter(kind);
-                if (filter == "L" && kind == CrontabFieldKind.Day) return new LastDayOfMonthFilter(kind);
+                if (newFilter == "*") return new AnyFilter(kind);
+                if (newFilter == "L" && kind == CrontabFieldKind.Day) return new LastDayOfMonthFilter(kind);
 
-                var firstValue = GetValue(ref filter);
+                var firstValue = GetValue(ref newFilter);
 
-                if (string.IsNullOrEmpty(filter))
+                if (string.IsNullOrEmpty(newFilter))
                     return new SpecificFilter(firstValue, kind);
 
-                switch (filter[0])
+                switch (newFilter[0])
                 {
                     case '-':
                     {
-                        filter = filter.Substring(1);
-                        var secondValue = GetValue(ref filter);
+                        newFilter = newFilter.Substring(1);
+                        var secondValue = GetValue(ref newFilter);
                         return new RangeFilter(firstValue, secondValue, kind);
                     }
                     case '#':
                     {
-                        filter = filter.Substring(1);
-                        var secondValue = GetValue(ref filter);
+                        newFilter = newFilter.Substring(1);
+                        var secondValue = GetValue(ref newFilter);
 
-                        if (!string.IsNullOrEmpty(filter))
+                        if (!string.IsNullOrEmpty(newFilter))
                             throw new Exception(string.Format("Invalid filter '{0}'", filter));
 
                         return new SpecificDayOfWeekInMonthFilter(firstValue, secondValue, kind);
                     }
                     default:
-                        if (filter == "L" && kind == CrontabFieldKind.DayOfWeek)
+                        if (newFilter == "L" && kind == CrontabFieldKind.DayOfWeek)
                         {
                             return new LastDayOfWeekInMonthFilter(firstValue, kind);
                         }
-                        else if (filter == "W" && kind == CrontabFieldKind.DayOfWeek)
+                        else if (newFilter == "W" && kind == CrontabFieldKind.DayOfWeek)
                         {
                             return new NearestWeekdayFilter(firstValue, kind);
                         }
