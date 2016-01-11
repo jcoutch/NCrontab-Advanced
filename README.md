@@ -25,12 +25,12 @@ Ever try to get the next instance of a date from a cron string that has no next 
 ```
 Field name   | Allowed values  | Allowed special characters
 ------------------------------------------------------------
-Minutes      | 0-59            | * , -
-Hours        | 0-23            | * , -
-Day of month | 1-31            | * , - L W
-Month        | 1-12 or JAN-DEC | * , -
-Day of week  | 0-6 or SUN-SAT  | * , - L #
-Year         | 1970–2099       | * , -
+Minutes      | 0-59            | * , - /
+Hours        | 0-23            | * , - /
+Day of month | 1-31            | * , - / L W
+Month        | 1-12 or JAN-DEC | * , - /
+Day of week  | 0-6 or SUN-SAT  | * , - / L #
+Year         | 1970–2099       | * , - /
 ```
 
 Instructions for using these expressions are on the [Cron Expresssions page on Wikipedia](https://en.wikipedia.org/wiki/Cron#CRON_expression).
