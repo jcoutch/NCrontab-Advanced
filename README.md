@@ -4,7 +4,7 @@
 
 We were looking to implement [NCrontab](https://github.com/atifaziz/NCrontab) for a project, but found it had a few shortcomings:
 * No support for #, L and W
-* Only supported one cron format:  "MINUTES HOURS DAYS MONTHS DAYS-OF-WEEK"
+* Only supported two cron formats:  "SECONDS MINUTES HOURS DAYS MONTHS DAYS-OF-WEEK" and one without SECONDS.
 
 So, I started looking into adding these features.  After some digging through the code, it became apparent that while the code worked well for the cron strings that it supported, it wouldn't scale well for support of #, L and W. :-(
 
