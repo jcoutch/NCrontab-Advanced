@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://github.com/jcoutch/NCrontab-Advanced/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/jcoutch/NCrontab-Advanced</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/jcoutch/NCrontab-Advanced/master/NCrontab.Advanced/Icons/x-office-calendar.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>NCrontab-Advanced is intended to be as close of a drop-in replacement for NCrontab as possible, and contains additional features (#, L, W support, as well as support for seconds and years.)</description>
+    <releaseNotes>Initial release (not fully unit tested yet)</releaseNotes>
+    <copyright></copyright>
+    <tags>cron crontab ncrontab schedule dates datetime</tags>
+  </metadata>
+</package>

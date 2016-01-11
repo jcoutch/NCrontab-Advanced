@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("NCrontab.Advanced")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Joe Coutcher")]
 [assembly: AssemblyProduct("NCrontab.Advanced")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
