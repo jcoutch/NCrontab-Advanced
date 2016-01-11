@@ -11,7 +11,6 @@ using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NCrontab.Advanced.Enumerations;
 using NCrontab.Advanced.Exceptions;
-using NCrontab.Advanced.Parsers;
 using NCrontab.Advanced.Tests.Extensions;
 
 namespace NCrontab.Advanced.Tests
@@ -25,33 +24,33 @@ namespace NCrontab.Advanced.Tests
         [TestMethod]
         public void CannotParseNullString()
         {
-            Assert2.Throws<CrontabException>(() => CronInstance.Parse(null));
+            Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse(null));
         }
 
         [TestMethod]
         public void CannotParseEmptyString()
         {
-            Assert2.Throws<CrontabException>(() => CronInstance.Parse(string.Empty));
+            Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse(string.Empty));
         }
 
         [TestMethod]
         public void AllTimeString()
         {
             var input = "* * * * *";
-            var output = CronInstance.Parse(input, CronStringFormat.Default).ToString();
+            var output = CrontabSchedule.Parse(input, CronStringFormat.Default).ToString();
             Assert.AreEqual(input, output);
         }
 
         [TestMethod]
         public void SixPartAllTimeString()
         {
-            Assert.AreEqual("* * * * * *", CronInstance.Parse("* * * * * *", CronStringFormat.WithSeconds).ToString());
+            Assert.AreEqual("* * * * * *", CrontabSchedule.Parse("* * * * * *", CronStringFormat.WithSeconds).ToString());
         }
 
         [TestMethod]
         public void CannotParseWhenSecondsRequired()
         {
-            Assert2.Throws<CrontabException>(() => CronInstance.Parse("* * * * *", CronStringFormat.WithSeconds));
+            Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse("* * * * *", CronStringFormat.WithSeconds));
         }
 
         [TestMethod]
@@ -69,7 +68,7 @@ namespace NCrontab.Advanced.Tests
             };
 
             foreach (var test in tests)
-                Assert.AreEqual(test.outputString, CronInstance.Parse(test.inputString, test.cronStringFormat).ToString());
+                Assert.AreEqual(test.outputString, CrontabSchedule.Parse(test.inputString, test.cronStringFormat).ToString());
         }
 
         /// <summary>
@@ -299,7 +298,7 @@ namespace NCrontab.Advanced.Tests
         [TestMethod]
         static void BadField(string expression, CronStringFormat format)
         {
-            Assert2.Throws<CrontabException>(() => CronInstance.Parse(expression, format));
+            Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse(expression, format));
         }
 
         [TestMethod]
@@ -373,7 +372,7 @@ namespace NCrontab.Advanced.Tests
 
         static void CronCall(string startTimeString, string cronExpression, string nextTimeString, CronStringFormat format)
         {
-            var schedule = CronInstance.Parse(cronExpression, format);
+            var schedule = CrontabSchedule.Parse(cronExpression, format);
             var next = schedule.GetNextOccurrence(Time(startTimeString));
 
             var message = string.Format("Occurrence of <{0}> after <{1}>.", cronExpression, startTimeString);
@@ -382,7 +381,7 @@ namespace NCrontab.Advanced.Tests
 
         static void CronFinite(string cronExpression, string startTimeString, string endTimeString, CronStringFormat format)
         {
-            var schedule = CronInstance.Parse(cronExpression, format);
+            var schedule = CrontabSchedule.Parse(cronExpression, format);
             var occurrence = schedule.GetNextOccurrence(Time(startTimeString), Time(endTimeString));
 
             Assert.AreEqual(endTimeString, TimeString(occurrence),

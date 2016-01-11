@@ -63,7 +63,7 @@
     <Compile Include="Filters\SpecificDayOfWeekInMonthFilter.cs" />
     <Compile Include="Filters\SpecificFilter.cs" />
     <Compile Include="Interfaces\ICronFilter.cs" />
-    <Compile Include="Parsers\Parser.cs" />
+    <Compile Include="CrontabSchedule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

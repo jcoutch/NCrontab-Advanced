@@ -8,9 +8,9 @@ using NCrontab.Advanced.Extensions;
 using NCrontab.Advanced.Filters;
 using NCrontab.Advanced.Interfaces;
 
-namespace NCrontab.Advanced.Parsers
+namespace NCrontab.Advanced
 {
-    public class CronInstance
+    public class CrontabSchedule
     {
         private static readonly Dictionary<string, int> ReplaceValues = new Dictionary<string, int>
         {
@@ -137,13 +137,25 @@ namespace NCrontab.Advanced.Parsers
 
         #region Static Methods
 
-        public static CronInstance Parse(string cronString, CronStringFormat format = CronStringFormat.Default)
+        public static CrontabSchedule Parse(string expression, CronStringFormat format = CronStringFormat.Default)
         {
-            return new CronInstance
+            return new CrontabSchedule
             {
                 Format = format,
-                Filters = ParseToDictionary(cronString, format)
+                Filters = ParseToDictionary(expression, format)
             };
+        }
+
+        public static CrontabSchedule TryParse(string expression, CronStringFormat format = CronStringFormat.Default)
+        {
+            try
+            {
+                return Parse(expression, format);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
 
         public static void CheckForIllegalFilters(Dictionary<CrontabFieldKind, List<ICronFilter>> filters)
