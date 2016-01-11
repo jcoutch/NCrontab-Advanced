@@ -65,5 +65,10 @@ namespace NCrontab.Advanced.Filters
 
             return value.Day == closestWeekday.Day;
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0}W", SpecificValue);
+        }
     }
 }

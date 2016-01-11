@@ -36,5 +36,11 @@ namespace NCrontab.Advanced.Filters
         {
             return value.Day == DateTimeDayOfWeek.LastDayOfMonth(value.Year, value.Month);
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0}L", DayOfWeek);
+        }
+
     }
 }

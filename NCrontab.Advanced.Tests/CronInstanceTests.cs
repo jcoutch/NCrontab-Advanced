@@ -25,7 +25,7 @@ namespace NCrontab.Advanced.Tests
         [TestMethod]
         public void CannotParseNullString()
         {
-            Assert2.Throws<ArgumentNullException>(() => CronInstance.Parse(null));
+            Assert2.Throws<CrontabException>(() => CronInstance.Parse(null));
         }
 
         [TestMethod]
@@ -58,14 +58,14 @@ namespace NCrontab.Advanced.Tests
         public void Formatting()
         {
             var tests = new[] {
-                new { inputString = "* 1-3 * * *"            , outputString = "* 1-2,3 * * *"                   , cronStringFormat = CronStringFormat.Default },
-	            new { inputString = "* * * 1,3,5,7,9,11 *"   , outputString = "* * * */2 *"                     , cronStringFormat = CronStringFormat.Default },
-	            new { inputString = "10,25,40 * * * *"       , outputString = "10-40/15 * * * *"                , cronStringFormat = CronStringFormat.Default },
-	            new { inputString = "* * * 1,3,8 1-2,5"      , outputString = "* * * Mar,Jan,Aug Fri,Mon-Tue"   , cronStringFormat = CronStringFormat.Default },
-	            new { inputString = "1 * 1-3 * * *"          , outputString = "1 * 1-2,3 * * *"                 , cronStringFormat = CronStringFormat.WithSeconds },
-	            new { inputString = "22 * * * 1,3,5,7,9,11 *", outputString = "22 * * * */2 *"                  , cronStringFormat = CronStringFormat.WithSeconds },
-	            new { inputString = "33 10,25,40 * * * *"    , outputString = "33 10-40/15 * * * *"             , cronStringFormat = CronStringFormat.WithSeconds },
-	            new { inputString = "55 * * * 1,3,8 1-2,5"   , outputString = "55 * * * Mar,Jan,Aug Fri,Mon-Tue", cronStringFormat = CronStringFormat.WithSeconds },
+                new { inputString = "* 1-2,3 * * *"                   , outputString = "* 1-2,3 * * *"                   , cronStringFormat = CronStringFormat.Default },
+	            new { inputString = "* * * */2 *"                     , outputString = "* * * */2 *"                     , cronStringFormat = CronStringFormat.Default },
+	            new { inputString = "10-40/15 * * * *"                , outputString = "10-40/15 * * * *"                , cronStringFormat = CronStringFormat.Default },
+	            new { inputString = "* * * Mar,Jan,Aug Fri,Mon-Tue"   , outputString = "* * * 3,1,8 5,1-2"               , cronStringFormat = CronStringFormat.Default },
+	            new { inputString = "1 * 1-2,3 * * *"                 , outputString = "1 * 1-2,3 * * *"                 , cronStringFormat = CronStringFormat.WithSeconds },
+	            new { inputString = "22 * * * */2 *"                  , outputString = "22 * * * */2 *"                  , cronStringFormat = CronStringFormat.WithSeconds },
+	            new { inputString = "33 10-40/15 * * * *"             , outputString = "33 10-40/15 * * * *"             , cronStringFormat = CronStringFormat.WithSeconds },
+	            new { inputString = "55 * * * Mar,Jan,Aug Fri,Mon-Tue", outputString = "55 * * * 3,1,8 5,1-2"            , cronStringFormat = CronStringFormat.WithSeconds },
             };
 
             foreach (var test in tests)
@@ -261,7 +261,7 @@ namespace NCrontab.Advanced.Tests
         }
 
         [TestMethod]
-        public void FiniteOccurrences(string cronExpression, string startTimeString, string endTimeString, bool includingSeconds)
+        public void FiniteOccurrences()
         {
             var tests = new []
             {
@@ -289,13 +289,11 @@ namespace NCrontab.Advanced.Tests
         // 31st because no such date would ever exist!
         //
 
-        [TestCategory("Performance")]
-        [Timeout(1000)]
         [TestMethod]
-        public void DontLoopIndefinitely()
+        public void IllegalDates()
         {
-            CronFinite("* * 31 Feb *", "01/01/2001 00:00:00", "01/01/2010 00:00:00", CronStringFormat.Default);
-            CronFinite("* * * 31 Feb *", "01/01/2001 00:00:00", "01/01/2010 00:00:00", CronStringFormat.WithSeconds);
+            BadField("* * 31 Feb *", CronStringFormat.Default);
+            BadField("* * * 31 Feb *", CronStringFormat.WithSeconds);
         }
 
         [TestMethod]
@@ -360,30 +358,28 @@ namespace NCrontab.Advanced.Tests
         }
 
         [TestMethod]
-        public void NonNumericFieldInterval(string expression, bool includingSeconds)
+        public void NonNumericFieldInterval()
         {
             BadField("* 1/Z * * *", CronStringFormat.Default);
             BadField("* * 1/Z * * *", CronStringFormat.WithSeconds);
         }
 
         [TestMethod]
-        public void NonNumericFieldRangeComponent(string expression, bool includingSeconds)
+        public void NonNumericFieldRangeComponent()
         {
             BadField("* 3-l2 * * *", CronStringFormat.Default);
             BadField("* * 3-l2 * * *", CronStringFormat.WithSeconds);
         }
 
-        [TestMethod]
         static void CronCall(string startTimeString, string cronExpression, string nextTimeString, CronStringFormat format)
         {
             var schedule = CronInstance.Parse(cronExpression, format);
             var next = schedule.GetNextOccurrence(Time(startTimeString));
 
-            Assert.AreEqual(nextTimeString, TimeString(next),
-                "Occurrence of <{0}> after <{1}>.", cronExpression, startTimeString);
+            var message = string.Format("Occurrence of <{0}> after <{1}>.", cronExpression, startTimeString);
+            Assert.AreEqual(nextTimeString, TimeString(next), message);
         }
 
-        [TestMethod]
         static void CronFinite(string cronExpression, string startTimeString, string endTimeString, CronStringFormat format)
         {
             var schedule = CronInstance.Parse(cronExpression, format);

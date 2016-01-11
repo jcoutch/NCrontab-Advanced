@@ -52,16 +52,17 @@
     <Compile Include="Enumerations\CronFieldKind.cs" />
     <Compile Include="Enumerations\CronStringFormat.cs" />
     <Compile Include="Exceptions\CrontabException.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\DayOfWeekExtensions.cs" />
     <Compile Include="Filters\AnyFilter.cs" />
     <Compile Include="Filters\LastDayOfMonthFilter.cs" />
     <Compile Include="Filters\LastDayOfWeekInMonthFilter.cs" />
     <Compile Include="Filters\NearestWeekdayFilter.cs" />
+    <Compile Include="Filters\StepFilter.cs" />
     <Compile Include="Filters\RangeFilter.cs" />
     <Compile Include="Filters\SpecificDayOfWeekInMonthFilter.cs" />
     <Compile Include="Filters\SpecificFilter.cs" />
     <Compile Include="Interfaces\ICronFilter.cs" />
-    <Compile Include="Models\Range.cs" />
     <Compile Include="Parsers\Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

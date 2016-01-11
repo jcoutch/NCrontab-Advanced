@@ -30,5 +30,10 @@ namespace NCrontab.Advanced.Filters
         {
             return true;
         }
+
+        public override string ToString()
+        {
+            return "*";
+        }
     }
 }

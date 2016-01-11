@@ -46,5 +46,10 @@ namespace NCrontab.Advanced.Filters
 
             return evalValue == SpecificValue;
         }
+
+        public override string ToString()
+        {
+            return SpecificValue.ToString();
+        }
     }
 }

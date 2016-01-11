@@ -26,5 +26,9 @@ namespace NCrontab.Advanced.Filters
         {
             return DateTime.DaysInMonth(value.Year, value.Month) == value.Day;
         }
+        public override string ToString()
+        {
+            return "L";
+        }
     }
 }

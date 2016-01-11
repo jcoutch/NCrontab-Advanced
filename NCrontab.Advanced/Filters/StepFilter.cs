@@ -9,26 +9,23 @@ namespace NCrontab.Advanced.Filters
     /// <summary>
     /// Handles filtering ranges (i.e. 1-5)
     /// </summary>
-    class RangeFilter : ICronFilter
+    class StepFilter : ICronFilter
     {
         public CrontabFieldKind Kind { get; }
         public int Start { get; }
-        public int End { get; }
-        public int? Steps { get; }
+        public int Step { get; }
 
         /// <summary>
         /// Constructs a new RangeFilter instance
         /// </summary>
         /// <param name="start">The start of the range</param>
         /// <param name="end">The end of the range</param>
-        /// <param name="steps">The steps in the range</param>
         /// <param name="kind">The crontab field kind to associate with this filter</param>
-        public RangeFilter(int start, int end, int? steps, CrontabFieldKind kind)
+        public StepFilter(int start, int step, CrontabFieldKind kind)
         {
             Start = start;
-            End = end;
+            Step = step;
             Kind = kind;
-            Steps = steps;
         }
 
         /// <summary>
@@ -57,22 +54,21 @@ namespace NCrontab.Advanced.Filters
 
         private bool IsMatch(int evalValue)
         {
-            return evalValue >= Start && evalValue <= End && (!Steps.HasValue || ((evalValue - Start) % Steps) == 0);
+            return (evalValue - Start) % Step == 0;
         }
 
         public override string ToString()
         {
-            if (Steps.HasValue)
-                return string.Format("{0}-{1}/{2}", Start, End, Steps);
-            else
-                return string.Format("{0}-{1}", Start, End);
+            return string.Format("{0}/{1}", Start == 0 ? "*" : Start.ToString(), Step);
         }
 
         public IEnumerable<SpecificFilter> ToSpecificFilters()
         {
-            for(var evalValue = Start; evalValue <= End; evalValue++) 
+            var maxValue = DateTimeExtensions.MaximumValues[Kind];
+            for (var evalValue = Start; evalValue <= maxValue; evalValue++)
                 if (IsMatch(evalValue))
                     yield return new SpecificFilter(evalValue, Kind);
         }
+
     }
 }
