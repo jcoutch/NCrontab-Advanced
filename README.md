@@ -30,7 +30,7 @@ Hours        | 0-23            | * , - /
 Day of month | 1-31            | * , - / L W
 Month        | 1-12 or JAN-DEC | * , - /
 Day of week  | 0-6 or SUN-SAT  | * , - / L #
-Year         | 1970–2099       | * , - /
+Year         | 0001–9999       | * , - /
 ```
 
 Instructions for using these expressions are on the [Cron Expresssions page on Wikipedia](https://en.wikipedia.org/wiki/Cron#CRON_expression).
