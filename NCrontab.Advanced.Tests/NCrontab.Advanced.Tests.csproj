@@ -50,6 +50,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ConstantTests.cs" />
     <Compile Include="CronInstanceTests.cs" />
     <Compile Include="Extensions\AssertExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

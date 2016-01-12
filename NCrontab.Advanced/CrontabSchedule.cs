@@ -12,33 +12,6 @@ namespace NCrontab.Advanced
 {
     public class CrontabSchedule
     {
-        private static readonly Dictionary<string, int> ReplaceDayValues = new Dictionary<string, int>
-        {
-            {"SUN",  0},
-            {"MON",  1},
-            {"TUE",  2},
-            {"WED",  3},
-            {"THU",  4},
-            {"FRI",  5},
-            {"SAT",  6},
-        };
-
-        private static readonly Dictionary<string, int> ReplaceMonthValues = new Dictionary<string, int>
-        {
-            {"JAN",  1},
-            {"FEB",  2},
-            {"MAR",  3},
-            {"APR",  4},
-            {"MAY",  5},
-            {"JUN",  6},
-            {"JUL",  7},
-            {"AUG",  8},
-            {"SEP",  9},
-            {"OCT", 10},
-            {"NOV", 11},
-            {"DEC", 12},
-        }; 
-
         public Dictionary<CrontabFieldKind, List<ICronFilter>> Filters { get; set; }
         public CronStringFormat Format { get; set; }
 
@@ -156,7 +129,7 @@ namespace NCrontab.Advanced
             {
                 return Parse(expression, format);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }
@@ -192,7 +165,7 @@ namespace NCrontab.Advanced
 
             var instructions = cron.Split(new [] {' '}, StringSplitOptions.RemoveEmptyEntries);
 
-            var expectedCount = GetExpectedFieldCount(format);
+            var expectedCount = Constants.ExpectedFieldCounts[format];
             if (instructions.Length > expectedCount)
                 throw new CrontabException(string.Format("The provided cron string <{0}> has too many parameters", cron));
             if (instructions.Length < expectedCount)
@@ -315,7 +288,7 @@ namespace NCrontab.Advanced
 
         private static int GetValue(ref string filter, CrontabFieldKind kind)
         {
-            var maxValue = DateTimeExtensions.MaximumValues[kind];
+            var maxValue = Constants.MaximumDateTimeValues[kind];
 
             if (string.IsNullOrEmpty(filter))
                 throw new CrontabException("Expected number, but filter was empty.");
@@ -343,9 +316,9 @@ namespace NCrontab.Advanced
                 List<KeyValuePair<string, int>> replaceVal = null;
 
                 if (kind == CrontabFieldKind.DayOfWeek)
-                    replaceVal = ReplaceDayValues.Where(x => valueToParse.StartsWith(x.Key)).ToList();
+                    replaceVal = Constants.Days.Where(x => valueToParse.StartsWith(x.Key)).ToList();
                 else if (kind == CrontabFieldKind.Month)
-                    replaceVal = ReplaceMonthValues.Where(x => valueToParse.StartsWith(x.Key)).ToList();
+                    replaceVal = Constants.Months.Where(x => valueToParse.StartsWith(x.Key)).ToList();
 
                 if (replaceVal != null && replaceVal.Count == 1)
                 {
@@ -358,20 +331,6 @@ namespace NCrontab.Advanced
             }
 
             throw new CrontabException("Filter does not contain expected number");
-        }
-
-        private static int GetExpectedFieldCount(CronStringFormat format)
-        {
-            int fieldCount;
-            switch (format)
-            {
-                case CronStringFormat.Default: fieldCount = 5; break;
-                case CronStringFormat.WithYears: fieldCount = 6; break;
-                case CronStringFormat.WithSeconds: fieldCount = 6; break;
-                case CronStringFormat.WithSecondsAndYears: fieldCount = 7; break;
-                default: throw new ArgumentOutOfRangeException(nameof(format), format, null);
-            }
-            return fieldCount;
         }
 
         #endregion

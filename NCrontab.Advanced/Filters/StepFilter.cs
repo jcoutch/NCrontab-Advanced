@@ -64,7 +64,7 @@ namespace NCrontab.Advanced.Filters
 
         public IEnumerable<SpecificFilter> ToSpecificFilters()
         {
-            var maxValue = DateTimeExtensions.MaximumValues[Kind];
+            var maxValue = Constants.MaximumDateTimeValues[Kind];
             for (var evalValue = Start; evalValue <= maxValue; evalValue++)
                 if (IsMatch(evalValue))
                     yield return new SpecificFilter(evalValue, Kind);

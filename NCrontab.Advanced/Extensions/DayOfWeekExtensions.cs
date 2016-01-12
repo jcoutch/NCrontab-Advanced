@@ -17,34 +17,28 @@ namespace NCrontab.Advanced.Extensions
         /// <returns>An integer representing the provided day of week</returns>
         internal static int ToCronDayOfWeek(this DayOfWeek value)
         {
-            switch (value)
-            {
-                case DayOfWeek.Sunday: return 0;
-                case DayOfWeek.Monday: return 1;
-                case DayOfWeek.Tuesday: return 2;
-                case DayOfWeek.Wednesday: return 3;
-                case DayOfWeek.Thursday: return 4;
-                case DayOfWeek.Friday: return 5;
-                case DayOfWeek.Saturday: return 6;
-                default: throw new ArgumentOutOfRangeException(nameof(value), value, null);
-            }
+            return Constants.CronDays[value];
         }
 
+        /// <summary>
+        /// Since there is no guarantee that (int) DayOfWeek returns the same value
+        /// that cron uses (since the values aren't explicitly set in the DayOfWeek enum)
+        /// we have to use this method.
+        /// </summary>
+        /// <param name="value">The cron day value to convert</param>
+        /// <returns>A DayOfWeek representing the provided day of week</returns>
         internal static DayOfWeek ToDayOfWeek(this int value)
         {
-            switch (value)
-            {
-                case 0: return DayOfWeek.Sunday;
-                case 1: return DayOfWeek.Monday;
-                case 2: return DayOfWeek.Tuesday;
-                case 3: return DayOfWeek.Wednesday;
-                case 4: return DayOfWeek.Thursday;
-                case 5: return DayOfWeek.Friday;
-                case 6: return DayOfWeek.Saturday;
-                default: throw new ArgumentOutOfRangeException(nameof(value), value, null);
-            }
+            return Constants.CronDays.First(x => x.Value == value).Key;
         }
 
+        /// <summary>
+        /// Retrieves the last instance of the specified day of the month
+        /// </summary>
+        /// <param name="dayOfWeek">The day you want to find</param>
+        /// <param name="year">The year in which you want to find the day</param>
+        /// <param name="month">The month in which you want to find the day</param>
+        /// <returns>An integer representing the day that matches the criteria</returns>
         internal static int LastDayOfMonth(this DayOfWeek dayOfWeek, int year, int month)
         {
             var daysInMonth = DateTime.DaysInMonth(year, month);

@@ -49,10 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enumerations\CronFieldKind.cs" />
-    <Compile Include="Enumerations\CronStringFormat.cs" />
+    <Compile Include="Constants\CronFieldKind.cs" />
+    <Compile Include="Constants\CronStringFormat.cs" />
     <Compile Include="Exceptions\CrontabException.cs" />
-    <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\DayOfWeekExtensions.cs" />
     <Compile Include="Filters\AnyFilter.cs" />
     <Compile Include="Filters\LastDayOfMonthFilter.cs" />
@@ -66,6 +65,7 @@
     <Compile Include="Interfaces\ICronFilter.cs" />
     <Compile Include="CrontabSchedule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Constants\Constants.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="NCrontab.Advanced.nuspec" />
