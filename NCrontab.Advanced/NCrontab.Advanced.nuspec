@@ -11,7 +11,7 @@
     <iconUrl>https://raw.githubusercontent.com/jcoutch/NCrontab-Advanced/master/NCrontab.Advanced/Icons/x-office-calendar.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>NCrontab-Advanced is intended to be as close of a drop-in replacement for NCrontab as possible, and contains additional features (#, L, W support, as well as support for seconds and years.)</description>
-    <releaseNotes>Added LW support (last weekday of month)</releaseNotes>
+    <releaseNotes>Added unit tests and fixed bugs with nearest weekday parsing</releaseNotes>
     <copyright></copyright>
     <tags>cron crontab ncrontab schedule dates datetime</tags>
   </metadata>
