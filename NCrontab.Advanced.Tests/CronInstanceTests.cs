@@ -87,9 +87,39 @@ namespace NCrontab.Advanced.Tests
                 new { startTime = "01/01/2003 01:59:00", inputString = "* * * * *", nextOccurence = "01/01/2003 02:00:00", cronStringFormat = CronStringFormat.Default },
                 new { startTime = "01/01/2003 23:59:00", inputString = "* * * * *", nextOccurence = "02/01/2003 00:00:00", cronStringFormat = CronStringFormat.Default },
                 new { startTime = "31/12/2003 23:59:00", inputString = "* * * * *", nextOccurence = "01/01/2004 00:00:00", cronStringFormat = CronStringFormat.Default },
-
                 new { startTime = "28/02/2003 23:59:00", inputString = "* * * * *", nextOccurence = "01/03/2003 00:00:00", cronStringFormat = CronStringFormat.Default },
                 new { startTime = "28/02/2004 23:59:00", inputString = "* * * * *", nextOccurence = "29/02/2004 00:00:00", cronStringFormat = CronStringFormat.Default },
+
+                new { startTime = "01/01/2003 00:00:00", inputString = "* * * * * *", nextOccurence = "01/01/2003 00:00:01", cronStringFormat = CronStringFormat.WithSeconds },
+                new { startTime = "01/01/2003 00:00:01", inputString = "* * * * * *", nextOccurence = "01/01/2003 00:00:02", cronStringFormat = CronStringFormat.WithSeconds },
+                new { startTime = "01/01/2003 00:00:02", inputString = "* * * * * *", nextOccurence = "01/01/2003 00:00:03", cronStringFormat = CronStringFormat.WithSeconds },
+                new { startTime = "01/01/2003 00:00:59", inputString = "* * * * * *", nextOccurence = "01/01/2003 00:01:00", cronStringFormat = CronStringFormat.WithSeconds },
+                new { startTime = "01/01/2003 00:01:59", inputString = "* * * * * *", nextOccurence = "01/01/2003 00:02:00", cronStringFormat = CronStringFormat.WithSeconds },
+                new { startTime = "01/01/2003 23:59:59", inputString = "* * * * * *", nextOccurence = "02/01/2003 00:00:00", cronStringFormat = CronStringFormat.WithSeconds },
+                new { startTime = "31/12/2003 23:59:59", inputString = "* * * * * *", nextOccurence = "01/01/2004 00:00:00", cronStringFormat = CronStringFormat.WithSeconds },
+                new { startTime = "28/02/2003 23:59:59", inputString = "* * * * * *", nextOccurence = "01/03/2003 00:00:00", cronStringFormat = CronStringFormat.WithSeconds },
+                new { startTime = "28/02/2004 23:59:59", inputString = "* * * * * *", nextOccurence = "29/02/2004 00:00:00", cronStringFormat = CronStringFormat.WithSeconds },
+
+                new { startTime = "01/01/2003 00:00:00", inputString = "* * * * * *", nextOccurence = "01/01/2003 00:01:00", cronStringFormat = CronStringFormat.WithYears },
+                new { startTime = "01/01/2003 00:01:00", inputString = "* * * * * *", nextOccurence = "01/01/2003 00:02:00", cronStringFormat = CronStringFormat.WithYears },
+                new { startTime = "01/01/2003 00:02:00", inputString = "* * * * * *", nextOccurence = "01/01/2003 00:03:00", cronStringFormat = CronStringFormat.WithYears },
+                new { startTime = "01/01/2003 00:59:00", inputString = "* * * * * *", nextOccurence = "01/01/2003 01:00:00", cronStringFormat = CronStringFormat.WithYears },
+                new { startTime = "01/01/2003 01:59:00", inputString = "* * * * * *", nextOccurence = "01/01/2003 02:00:00", cronStringFormat = CronStringFormat.WithYears },
+                new { startTime = "01/01/2003 23:59:00", inputString = "* * * * * *", nextOccurence = "02/01/2003 00:00:00", cronStringFormat = CronStringFormat.WithYears },
+                new { startTime = "31/12/2003 23:59:00", inputString = "* * * * * *", nextOccurence = "01/01/2004 00:00:00", cronStringFormat = CronStringFormat.WithYears },
+                new { startTime = "28/02/2003 23:59:00", inputString = "* * * * * *", nextOccurence = "01/03/2003 00:00:00", cronStringFormat = CronStringFormat.WithYears },
+                new { startTime = "28/02/2004 23:59:00", inputString = "* * * * * *", nextOccurence = "29/02/2004 00:00:00", cronStringFormat = CronStringFormat.WithYears },
+
+                new { startTime = "01/01/2003 00:00:00", inputString = "* * * * * * *", nextOccurence = "01/01/2003 00:00:01", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+                new { startTime = "01/01/2003 00:00:01", inputString = "* * * * * * *", nextOccurence = "01/01/2003 00:00:02", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+                new { startTime = "01/01/2003 00:00:02", inputString = "* * * * * * *", nextOccurence = "01/01/2003 00:00:03", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+                new { startTime = "01/01/2003 00:00:59", inputString = "* * * * * * *", nextOccurence = "01/01/2003 00:01:00", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+                new { startTime = "01/01/2003 00:01:59", inputString = "* * * * * * *", nextOccurence = "01/01/2003 00:02:00", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+                new { startTime = "01/01/2003 23:59:59", inputString = "* * * * * * *", nextOccurence = "02/01/2003 00:00:00", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+                new { startTime = "31/12/2003 23:59:59", inputString = "* * * * * * *", nextOccurence = "01/01/2004 00:00:00", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+                new { startTime = "28/02/2003 23:59:59", inputString = "* * * * * * *", nextOccurence = "01/03/2003 00:00:00", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+                new { startTime = "28/02/2004 23:59:59", inputString = "* * * * * * *", nextOccurence = "29/02/2004 00:00:00", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+
 
                 // Second tests
 
@@ -107,6 +137,21 @@ namespace NCrontab.Advanced.Tests
                 new { startTime = "01/01/2003 00:00:50", inputString = "2/5 * * * * *", nextOccurence = "01/01/2003 00:00:52", cronStringFormat = CronStringFormat.WithSeconds },
                 new { startTime = "01/01/2003 00:00:52", inputString = "2/5 * * * * *", nextOccurence = "01/01/2003 00:00:57", cronStringFormat = CronStringFormat.WithSeconds },
                 new { startTime = "01/01/2003 00:00:57", inputString = "2/5 * * * * *", nextOccurence = "01/01/2003 00:01:02", cronStringFormat = CronStringFormat.WithSeconds },
+
+                new { startTime = "01/01/2003 00:00:00", inputString = "45 * * * * * *", nextOccurence = "01/01/2003 00:00:45", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+
+                new { startTime = "01/01/2003 00:00:00", inputString = "45-47,48,49 * * * * * *", nextOccurence = "01/01/2003 00:00:45", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+                new { startTime = "01/01/2003 00:00:45", inputString = "45-47,48,49 * * * * * *", nextOccurence = "01/01/2003 00:00:46", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+                new { startTime = "01/01/2003 00:00:46", inputString = "45-47,48,49 * * * * * *", nextOccurence = "01/01/2003 00:00:47", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+                new { startTime = "01/01/2003 00:00:47", inputString = "45-47,48,49 * * * * * *", nextOccurence = "01/01/2003 00:00:48", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+                new { startTime = "01/01/2003 00:00:48", inputString = "45-47,48,49 * * * * * *", nextOccurence = "01/01/2003 00:00:49", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+                new { startTime = "01/01/2003 00:00:49", inputString = "45-47,48,49 * * * * * *", nextOccurence = "01/01/2003 00:01:45", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+
+                new { startTime = "01/01/2003 00:00:00", inputString = "2/5 * * * * * *", nextOccurence = "01/01/2003 00:00:02", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+                new { startTime = "01/01/2003 00:00:02", inputString = "2/5 * * * * * *", nextOccurence = "01/01/2003 00:00:07", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+                new { startTime = "01/01/2003 00:00:50", inputString = "2/5 * * * * * *", nextOccurence = "01/01/2003 00:00:52", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+                new { startTime = "01/01/2003 00:00:52", inputString = "2/5 * * * * * *", nextOccurence = "01/01/2003 00:00:57", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+                new { startTime = "01/01/2003 00:00:57", inputString = "2/5 * * * * * *", nextOccurence = "01/01/2003 00:01:02", cronStringFormat = CronStringFormat.WithSecondsAndYears },
 
                 // Minute tests
 
@@ -156,9 +201,16 @@ namespace NCrontab.Advanced.Tests
                 new { startTime = "01/01/2003 00:00:00", inputString = "30 23 21    * *", nextOccurence = "21/01/2003 23:30:00", cronStringFormat = CronStringFormat.Default },
                 new { startTime = "01/01/2003 00:01:00", inputString = " *  * 21    * *", nextOccurence = "21/01/2003 00:00:00", cronStringFormat = CronStringFormat.Default },
                 new { startTime = "10/07/2003 00:00:00", inputString = " *  * 30,31 * *", nextOccurence = "30/07/2003 00:00:00", cronStringFormat = CronStringFormat.Default },
-                new { startTime = "10/07/2003 00:00:00", inputString = " *  * L * *", nextOccurence = "31/07/2003 00:00:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "20/01/2016 00:00:00", inputString = " *  * 1W * *", nextOccurence = "01/02/2016 00:00:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "28/04/2016 00:00:00", inputString = " *  * 1W * *", nextOccurence = "02/05/2016 00:00:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "30/09/2016 00:00:00", inputString = " *  * 1W * *", nextOccurence = "03/10/2016 00:00:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "01/02/2003 00:00:00", inputString = " *  * 15W * *", nextOccurence = "14/02/2003 00:00:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "01/06/2003 00:00:00", inputString = " *  * 15W * *", nextOccurence = "16/06/2003 00:00:00", cronStringFormat = CronStringFormat.Default },
                 new { startTime = "10/08/2003 00:00:00", inputString = " *  * LW * *", nextOccurence = "29/08/2003 00:00:00", cronStringFormat = CronStringFormat.Default },
                 new { startTime = "10/10/2015 00:00:00", inputString = " *  * LW * *", nextOccurence = "30/10/2015 00:00:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "10/07/2003 00:00:00", inputString = " *  * L * *", nextOccurence = "31/07/2003 00:00:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "01/02/2015 00:00:00", inputString = " *  * L * *", nextOccurence = "28/02/2015 00:00:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "01/02/2016 00:00:00", inputString = " *  * L * *", nextOccurence = "29/02/2016 00:00:00", cronStringFormat = CronStringFormat.Default },
 
                 // Test month rollovers for months with 28,29,30 and 31 days
 
@@ -222,6 +274,9 @@ namespace NCrontab.Advanced.Tests
                 new { startTime = "11/03/1988 14:23:00", inputString = "* 12 1 6 *", nextOccurence = "01/06/1988 12:00:00", cronStringFormat = CronStringFormat.Default },
                 new { startTime = "11/03/1988 14:23:00", inputString = "* 2,4-8,15 * 6 *", nextOccurence = "01/06/1988 02:00:00", cronStringFormat = CronStringFormat.Default },
                 new { startTime = "11/03/1988 14:23:00", inputString = "20 * * january,FeB,Mar,april,May,JuNE,July,Augu,SEPT-October,Nov,DECEM *", nextOccurence = "11/03/1988 15:20:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "11/09/1988 14:23:00", inputString = "* 12 1 6 * 1988,1989", nextOccurence = "01/06/1989 12:00:00", cronStringFormat = CronStringFormat.WithYears },
+                new { startTime = "11/09/1988 14:23:00", inputString = "* 12 1 6 * 1988,2000", nextOccurence = "01/06/2000 12:00:00", cronStringFormat = CronStringFormat.WithYears },
+                new { startTime = "11/09/1988 14:23:00", inputString = "* 12 1 6 * 1988/5", nextOccurence = "01/06/1993 12:00:00", cronStringFormat = CronStringFormat.WithYears },
 
                 // Day of week tests
 
@@ -242,11 +297,17 @@ namespace NCrontab.Advanced.Tests
                 new { startTime = "01/01/2003 12:00:00", inputString = "45 16 1 * Mon", nextOccurence = "01/09/2003 16:45:00", cronStringFormat = CronStringFormat.Default },
                 new { startTime = "01/09/2003 23:45:00", inputString = "45 16 1 * Mon", nextOccurence = "01/12/2003 16:45:00", cronStringFormat = CronStringFormat.Default },
 
+                new { startTime = "01/09/2003 23:45:00", inputString = "45 16 * * Mon#2", nextOccurence = "08/09/2003 16:45:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "01/09/2003 23:45:00", inputString = "45 16 * * 2#4", nextOccurence = "23/09/2003 16:45:00", cronStringFormat = CronStringFormat.Default },
+
                 // Leap year tests
 
                 new { startTime = "01/01/2000 12:00:00", inputString = "1 12 29 2 *", nextOccurence = "29/02/2000 12:01:00", cronStringFormat = CronStringFormat.Default },
                 new { startTime = "29/02/2000 12:01:00", inputString = "1 12 29 2 *", nextOccurence = "29/02/2004 12:01:00", cronStringFormat = CronStringFormat.Default },
                 new { startTime = "29/02/2004 12:01:00", inputString = "1 12 29 2 *", nextOccurence = "29/02/2008 12:01:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "29/02/2004 12:01:00", inputString = "1 12 29 2 * */3", nextOccurence = "29/02/2016 12:01:00", cronStringFormat = CronStringFormat.WithYears },
+                new { startTime = "29/02/2004 12:01:00", inputString = "1 12 29 2 * 2005/3", nextOccurence = "29/02/2008 12:01:00", cronStringFormat = CronStringFormat.WithYears },
+                new { startTime = "29/02/2004 12:01:00", inputString = "1 12 29 2 * 2002/7", nextOccurence = "29/02/2016 12:01:00", cronStringFormat = CronStringFormat.WithYears },
 
                 // Non-leap year tests
 
@@ -296,6 +357,9 @@ namespace NCrontab.Advanced.Tests
         {
             BadField("* * 31 Feb *", CronStringFormat.Default);
             BadField("* * * 31 Feb *", CronStringFormat.WithSeconds);
+            BadField("* * 31 Feb * *", CronStringFormat.WithYears);
+            BadField("* * * 31 Feb * *", CronStringFormat.WithSecondsAndYears);
+            BadField("* * 30-31 Feb *", CronStringFormat.Default);
         }
 
         [TestMethod]
@@ -353,10 +417,40 @@ namespace NCrontab.Advanced.Tests
         }
 
         [TestMethod]
+        public void BadYearField()
+        {
+            BadField("* * * * * Bad", CronStringFormat.WithYears);
+            BadField("* * * * * * Bad", CronStringFormat.WithSecondsAndYears);
+        }
+
+
+        [TestMethod]
         public void NonNumberValueInNumericOnlyField()
         {
             BadField("* 1,Z,3,4 * * *", CronStringFormat.Default);
             BadField("* * 1,Z,3,4 * * *", CronStringFormat.WithSeconds);
+        }
+
+        [TestMethod]
+        public void BadDayOfWeekStringParsing()
+        {
+            BadField("Mon * * * * * *", CronStringFormat.WithSecondsAndYears);
+            BadField("* Mon * * * * *", CronStringFormat.WithSecondsAndYears);
+            BadField("* * Mon * * * *", CronStringFormat.WithSecondsAndYears);
+            BadField("* * * Mon * * *", CronStringFormat.WithSecondsAndYears);
+            BadField("* * * * Mon * *", CronStringFormat.WithSecondsAndYears);
+            BadField("* * * * * * Mon", CronStringFormat.WithSecondsAndYears);
+        }
+
+        [TestMethod]
+        public void BadMonthStringParsing()
+        {
+            BadField("Oct * * * * * *", CronStringFormat.WithSecondsAndYears);
+            BadField("* Oct * * * * *", CronStringFormat.WithSecondsAndYears);
+            BadField("* * Oct * * * *", CronStringFormat.WithSecondsAndYears);
+            BadField("* * * Oct * * *", CronStringFormat.WithSecondsAndYears);
+            BadField("* * * * * Oct *", CronStringFormat.WithSecondsAndYears);
+            BadField("* * * * * * Oct", CronStringFormat.WithSecondsAndYears);
         }
 
         [TestMethod]
@@ -378,7 +472,7 @@ namespace NCrontab.Advanced.Tests
             var schedule = CrontabSchedule.Parse(cronExpression, format);
             var next = schedule.GetNextOccurrence(Time(startTimeString));
 
-            var message = string.Format("Occurrence of <{0}> after <{1}>.", cronExpression, startTimeString);
+            var message = string.Format("Occurrence of <{0}> after <{1}>, format <{2}>.", cronExpression, startTimeString, Enum.GetName(typeof(CronStringFormat), format));
             Assert.AreEqual(nextTimeString, TimeString(next), message);
         }
 

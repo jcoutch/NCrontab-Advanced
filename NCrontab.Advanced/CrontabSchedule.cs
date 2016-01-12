@@ -12,7 +12,18 @@ namespace NCrontab.Advanced
 {
     public class CrontabSchedule
     {
-        private static readonly Dictionary<string, int> ReplaceValues = new Dictionary<string, int>
+        private static readonly Dictionary<string, int> ReplaceDayValues = new Dictionary<string, int>
+        {
+            {"SUN",  0},
+            {"MON",  1},
+            {"TUE",  2},
+            {"WED",  3},
+            {"THU",  4},
+            {"FRI",  5},
+            {"SAT",  6},
+        };
+
+        private static readonly Dictionary<string, int> ReplaceMonthValues = new Dictionary<string, int>
         {
             {"JAN",  1},
             {"FEB",  2},
@@ -26,14 +37,7 @@ namespace NCrontab.Advanced
             {"OCT", 10},
             {"NOV", 11},
             {"DEC", 12},
-            {"SUN",  0},
-            {"MON",  1},
-            {"TUE",  2},
-            {"WED",  3},
-            {"THU",  4},
-            {"FRI",  5},
-            {"SAT",  6},
-        };
+        }; 
 
         public Dictionary<CrontabFieldKind, List<ICronFilter>> Filters { get; set; }
         public CronStringFormat Format { get; set; }
@@ -188,8 +192,11 @@ namespace NCrontab.Advanced
 
             var instructions = cron.Split(new [] {' '}, StringSplitOptions.RemoveEmptyEntries);
 
-            if (instructions.Length != GetExpectedFieldCount(format))
-                throw new CrontabException("The provided cron string has too many parameters");
+            var expectedCount = GetExpectedFieldCount(format);
+            if (instructions.Length > expectedCount)
+                throw new CrontabException(string.Format("The provided cron string <{0}> has too many parameters", cron));
+            if (instructions.Length < expectedCount)
+                throw new CrontabException(string.Format("The provided cron string <{0}> has too few parameters", cron));
 
             var defaultFieldOffset = 0;
             if (format == CronStringFormat.WithSeconds || format == CronStringFormat.WithSecondsAndYears)
@@ -291,7 +298,7 @@ namespace NCrontab.Advanced
                         {
                             return new LastDayOfWeekInMonthFilter(firstValue, kind);
                         }
-                        else if (newFilter == "W" && kind == CrontabFieldKind.DayOfWeek)
+                        else if (newFilter == "W" && kind == CrontabFieldKind.Day)
                         {
                             return new NearestWeekdayFilter(firstValue, kind);
                         }
@@ -310,9 +317,17 @@ namespace NCrontab.Advanced
         {
             var maxValue = DateTimeExtensions.MaximumValues[kind];
 
+            if (string.IsNullOrEmpty(filter))
+                throw new CrontabException("Expected number, but filter was empty.");
+
             int i, value;
+            var isDigit = char.IsDigit(filter[0]);
+            var isLetter = char.IsLetter(filter[0]);
+
+            // Because this could either numbers, or letters, but not a combination,
+            // check each condition separately.
             for (i = 0; i < filter.Length; i++)
-                if (!char.IsLetterOrDigit(filter[i])) break;
+                if ((isDigit && !char.IsDigit(filter[i])) || (isLetter && !char.IsLetter(filter[i]))) break;
 
             var valueToParse = filter.Substring(0, i);
             if (int.TryParse(valueToParse, out value))
@@ -325,8 +340,14 @@ namespace NCrontab.Advanced
             }
             else
             {
-                var replaceVal = ReplaceValues.Where(x => valueToParse.StartsWith(x.Key)).ToList();
-                if (replaceVal.Count == 1)
+                List<KeyValuePair<string, int>> replaceVal = null;
+
+                if (kind == CrontabFieldKind.DayOfWeek)
+                    replaceVal = ReplaceDayValues.Where(x => valueToParse.StartsWith(x.Key)).ToList();
+                else if (kind == CrontabFieldKind.Month)
+                    replaceVal = ReplaceMonthValues.Where(x => valueToParse.StartsWith(x.Key)).ToList();
+
+                if (replaceVal != null && replaceVal.Count == 1)
                 {
                     filter = filter.Substring(i);
                     var returnValue = replaceVal.First().Value;
