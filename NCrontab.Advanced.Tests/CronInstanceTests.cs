@@ -156,6 +156,9 @@ namespace NCrontab.Advanced.Tests
                 new { startTime = "01/01/2003 00:00:00", inputString = "30 23 21    * *", nextOccurence = "21/01/2003 23:30:00", cronStringFormat = CronStringFormat.Default },
                 new { startTime = "01/01/2003 00:01:00", inputString = " *  * 21    * *", nextOccurence = "21/01/2003 00:00:00", cronStringFormat = CronStringFormat.Default },
                 new { startTime = "10/07/2003 00:00:00", inputString = " *  * 30,31 * *", nextOccurence = "30/07/2003 00:00:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "10/07/2003 00:00:00", inputString = " *  * L * *", nextOccurence = "31/07/2003 00:00:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "10/08/2003 00:00:00", inputString = " *  * LW * *", nextOccurence = "29/08/2003 00:00:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "10/10/2015 00:00:00", inputString = " *  * LW * *", nextOccurence = "30/10/2015 00:00:00", cronStringFormat = CronStringFormat.Default },
 
                 // Test month rollovers for months with 28,29,30 and 31 days
 

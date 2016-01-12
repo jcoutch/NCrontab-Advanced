@@ -242,7 +242,14 @@ namespace NCrontab.Advanced
                     return new AnyFilter(kind);
                 }
 
-                if (newFilter == "L" && kind == CrontabFieldKind.Day) return new LastDayOfMonthFilter(kind);
+                if (newFilter.StartsWith("L") && kind == CrontabFieldKind.Day)
+                {
+                    newFilter = newFilter.Substring(1);
+                    if (newFilter == "W")
+                        return new LastWeekdayOfMonthFilter(kind);
+                    else
+                        return new LastDayOfMonthFilter(kind);
+                }
 
                 var firstValue = GetValue(ref newFilter, kind);
 

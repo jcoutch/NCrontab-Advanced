@@ -57,6 +57,7 @@
     <Compile Include="Filters\AnyFilter.cs" />
     <Compile Include="Filters\LastDayOfMonthFilter.cs" />
     <Compile Include="Filters\LastDayOfWeekInMonthFilter.cs" />
+    <Compile Include="Filters\LastWeekdayOfMonthFilter.cs" />
     <Compile Include="Filters\NearestWeekdayFilter.cs" />
     <Compile Include="Filters\StepFilter.cs" />
     <Compile Include="Filters\RangeFilter.cs" />
