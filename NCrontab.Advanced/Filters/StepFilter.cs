@@ -17,6 +17,11 @@ namespace NCrontab.Advanced.Filters
         public int Step { get; }
 
         /// <summary>
+        /// Returns a list of specific filters that represents this step filter
+        /// </summary>
+        public IEnumerable<SpecificFilter> SpecificFilters { get; }
+
+        /// <summary>
         /// Constructs a new RangeFilter instance
         /// </summary>
         /// <param name="start">The start of the range</param>
@@ -32,6 +37,13 @@ namespace NCrontab.Advanced.Filters
             Start = start;
             Step = step;
             Kind = kind;
+
+            var filters = new List<SpecificFilter>();
+            for (var evalValue = Start; evalValue <= maxValue; evalValue++)
+                if (IsMatch(evalValue))
+                    filters.Add(new SpecificFilter(evalValue, Kind));
+
+            SpecificFilters = filters;
         }
 
         /// <summary>
@@ -67,14 +79,5 @@ namespace NCrontab.Advanced.Filters
         {
             return string.Format("{0}/{1}", Start == 0 ? "*" : Start.ToString(), Step);
         }
-
-        public IEnumerable<SpecificFilter> ToSpecificFilters()
-        {
-            var maxValue = Constants.MaximumDateTimeValues[Kind];
-            for (var evalValue = Start; evalValue <= maxValue; evalValue++)
-                if (IsMatch(evalValue))
-                    yield return new SpecificFilter(evalValue, Kind);
-        }
-
     }
 }

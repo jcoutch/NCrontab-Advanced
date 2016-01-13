@@ -156,9 +156,9 @@ namespace NCrontab.Advanced
         private static List<SpecificFilter> GetSpecificFilters(Dictionary<CrontabFieldKind, List<ICronFilter>> filters, CrontabFieldKind kind)
         {
             return filters[kind].Where(x => x.GetType() == typeof(SpecificFilter)).Union(
-                filters[kind].Where(x => x.GetType() == typeof(RangeFilter)).SelectMany(x => ((RangeFilter)x).ToSpecificFilters())
+                filters[kind].Where(x => x.GetType() == typeof(RangeFilter)).SelectMany(x => ((RangeFilter)x).SpecificFilters)
                 ).Union(
-                    filters[kind].Where(x => x.GetType() == typeof(StepFilter)).SelectMany(x => ((StepFilter)x).ToSpecificFilters())
+                    filters[kind].Where(x => x.GetType() == typeof(StepFilter)).SelectMany(x => ((StepFilter)x).SpecificFilters)
                 ).Cast<SpecificFilter>().ToList();
         }
 

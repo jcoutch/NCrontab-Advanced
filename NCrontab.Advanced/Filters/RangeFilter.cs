@@ -18,6 +18,12 @@ namespace NCrontab.Advanced.Filters
         public int? Steps { get; }
 
         /// <summary>
+        /// Returns a list of specific filters that represents this step filter.
+        /// NOTE - This is only populated on construction, and should NOT be modified.
+        /// </summary>
+        public IEnumerable<SpecificFilter> SpecificFilters { get; }
+
+        /// <summary>
         /// Constructs a new RangeFilter instance
         /// </summary>
         /// <param name="start">The start of the range</param>
@@ -41,6 +47,13 @@ namespace NCrontab.Advanced.Filters
             End = end;
             Kind = kind;
             Steps = steps;
+
+            var filters = new List<SpecificFilter>();
+            for (var evalValue = Start; evalValue <= End; evalValue++)
+                if (IsMatch(evalValue))
+                    filters.Add(new SpecificFilter(evalValue, Kind));
+
+            SpecificFilters = filters;
         }
 
         /// <summary>
@@ -78,13 +91,6 @@ namespace NCrontab.Advanced.Filters
                 return string.Format("{0}-{1}/{2}", Start, End, Steps);
             else
                 return string.Format("{0}-{1}", Start, End);
-        }
-
-        public IEnumerable<SpecificFilter> ToSpecificFilters()
-        {
-            for(var evalValue = Start; evalValue <= End; evalValue++) 
-                if (IsMatch(evalValue))
-                    yield return new SpecificFilter(evalValue, Kind);
         }
     }
 }
