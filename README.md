@@ -1,6 +1,6 @@
 # NCrontab Advanced
 
-** If you have any problems, make sure to file an issue here on Github.  Documentation coming soon. **
+**If you have any problems, make sure to file an issue here on Github.  Documentation coming soon.**
 
 We were looking to implement [NCrontab](https://github.com/atifaziz/NCrontab) for a project, but found it had a few shortcomings:
 * No support for #, L and W
