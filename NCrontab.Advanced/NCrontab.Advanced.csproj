@@ -68,6 +68,9 @@
     <Compile Include="Constants\Constants.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\README.md">
+      <Link>README.md</Link>
+    </None>
     <None Include="NCrontab.Advanced.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

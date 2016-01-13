@@ -15,6 +15,13 @@ namespace NCrontab.Advanced
         public Dictionary<CrontabFieldKind, List<ICronFilter>> Filters { get; set; }
         public CronStringFormat Format { get; set; }
 
+        // In the event a developer creates their own instance
+        public CrontabSchedule()
+        {
+            Filters = new Dictionary<CrontabFieldKind, List<ICronFilter>>();
+            Format = CronStringFormat.Default;
+        }
+
         public override string ToString()
         {
             var paramList = new List<string>();
@@ -47,7 +54,6 @@ namespace NCrontab.Advanced
             if (timeout == 0) return task.Result;
 
             // If a timeout is specified, wait, and if it can't find within the alloted time, throw an exception.
-            task.Start();
             var foundValue = task.Wait(timeout);
             if (!foundValue) throw new TimeoutException("GetNextOccurrence timed out while finding next value");
 
