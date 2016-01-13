@@ -1,6 +1,6 @@
 # NCrontab Advanced
 
-**NOTE - this is still in development, and hasn't been fully unit tested.  USE AT YOUR OWN RISK!**
+** If you have any problems, make sure to file an issue here on Github.  Documentation coming soon. **
 
 We were looking to implement [NCrontab](https://github.com/atifaziz/NCrontab) for a project, but found it had a few shortcomings:
 * No support for #, L and W
@@ -34,5 +34,3 @@ Year         | 0001–9999       | * , - /
 ```
 
 Instructions for using these expressions are on the [Cron Expresssions page on Wikipedia](https://en.wikipedia.org/wiki/Cron#CRON_expression).
-
-If you have any problems, make sure to file an issue here on Github.  Documentation coming soon.
