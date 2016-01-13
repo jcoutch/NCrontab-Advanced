@@ -1,5 +1,6 @@
 ﻿using System;
 using NCrontab.Advanced.Enumerations;
+using NCrontab.Advanced.Exceptions;
 using NCrontab.Advanced.Interfaces;
 
 namespace NCrontab.Advanced.Filters
@@ -7,12 +8,15 @@ namespace NCrontab.Advanced.Filters
     /// <summary>
     /// Handles filtering for the last day of the month
     /// </summary>
-    class LastDayOfMonthFilter : ICronFilter
+    public class LastDayOfMonthFilter : ICronFilter
     {
         public CrontabFieldKind Kind { get; }
 
         public LastDayOfMonthFilter(CrontabFieldKind kind)
         {
+            if (kind != CrontabFieldKind.Day)
+                throw new CrontabException("The <L> filter can only be used with the Day field.");
+
             Kind = kind;
         }
 

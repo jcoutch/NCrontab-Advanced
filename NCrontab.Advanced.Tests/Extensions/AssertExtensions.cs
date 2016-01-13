@@ -9,8 +9,9 @@ namespace NCrontab.Advanced.Tests.Extensions
 {
     public static class Assert2
     {
-        public static void Throws<T>(Action methodToCall) where T : Exception
+        public static void Throws<T>(Action methodToCall, string message = "", params object[] values) where T : Exception
         {
+            var additionalInfo = string.Format(message, values);
             try
             {
                 methodToCall();
@@ -21,10 +22,10 @@ namespace NCrontab.Advanced.Tests.Extensions
             }
             catch (Exception e)
             {
-                throw new AssertFailedException(string.Format("Expected exception '{0}', but '{1}' was thrown\n\n{2}", typeof(T).Name, e.GetType().Name, e.ToString()));
+                throw new AssertFailedException(string.Format("Expected exception '{0}', but '{1}' was thrown\n\n{2}.  {3}", typeof(T).Name, e.GetType().Name, e, additionalInfo));
             }
 
-            Assert.Fail(string.Format("Expected exception '{0}', but no exception was thrown", typeof(T).Name));
+            Assert.Fail(string.Format("Expected exception '{0}', but no exception was thrown.  {1}", typeof(T).Name, additionalInfo));
         }
     }
 }

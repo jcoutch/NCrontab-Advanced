@@ -8,7 +8,7 @@ namespace NCrontab.Advanced.Filters
     /// <summary>
     /// Handles filtering for a specific value
     /// </summary>
-    class SpecificFilter : ICronFilter
+    public class SpecificFilter : ICronFilter
     {
         public CrontabFieldKind Kind { get; }
         public int SpecificValue { get; }

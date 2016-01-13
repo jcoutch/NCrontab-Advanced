@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NCrontab.Advanced.Enumerations;
+using NCrontab.Advanced.Exceptions;
 using NCrontab.Advanced.Extensions;
 using NCrontab.Advanced.Interfaces;
 
@@ -9,7 +10,7 @@ namespace NCrontab.Advanced.Filters
     /// <summary>
     /// Handles filtering ranges (i.e. 1-5)
     /// </summary>
-    class StepFilter : ICronFilter
+    public class StepFilter : ICronFilter
     {
         public CrontabFieldKind Kind { get; }
         public int Start { get; }
@@ -23,6 +24,11 @@ namespace NCrontab.Advanced.Filters
         /// <param name="kind">The crontab field kind to associate with this filter</param>
         public StepFilter(int start, int step, CrontabFieldKind kind)
         {
+            var maxValue = Constants.MaximumDateTimeValues[kind];
+
+            if (step <= 0 || step > maxValue)
+                throw new CrontabException(string.Format("Steps = {0} is out of bounds for <{1}> field", step, Enum.GetName(typeof(CrontabFieldKind), kind)));
+
             Start = start;
             Step = step;
             Kind = kind;

@@ -1,5 +1,6 @@
 ﻿using System;
 using NCrontab.Advanced.Enumerations;
+using NCrontab.Advanced.Exceptions;
 using NCrontab.Advanced.Extensions;
 using NCrontab.Advanced.Interfaces;
 
@@ -8,7 +9,7 @@ namespace NCrontab.Advanced.Filters
     /// <summary>
     /// Handles filtering for a specific day of the week in the month (i.e. 3rd Tuesday of the month)
     /// </summary>
-    class SpecificDayOfWeekInMonthFilter : ICronFilter
+    public class SpecificDayOfWeekInMonthFilter : ICronFilter
     {
         public CrontabFieldKind Kind { get; }
         public int DayOfWeek { get; }
@@ -23,6 +24,12 @@ namespace NCrontab.Advanced.Filters
         /// <param name="kind">The crontab field kind to associate with this filter</param>
         public SpecificDayOfWeekInMonthFilter(int dayOfWeek, int weekNumber, CrontabFieldKind kind)
         {
+            if (weekNumber <= 0 || weekNumber > 5)
+                throw new CrontabException(string.Format("Week number = {0} is out of bounds.", weekNumber));
+
+            if (kind != CrontabFieldKind.DayOfWeek)
+                throw new CrontabException(string.Format("<{0}#{1}> can only be used in the Day of Week field.", dayOfWeek, weekNumber));
+
             DayOfWeek = dayOfWeek;
             DateTimeDayOfWeek = dayOfWeek.ToDayOfWeek();
             WeekNumber = weekNumber;

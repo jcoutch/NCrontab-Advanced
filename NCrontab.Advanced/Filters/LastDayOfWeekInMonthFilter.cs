@@ -1,5 +1,6 @@
 ﻿using System;
 using NCrontab.Advanced.Enumerations;
+using NCrontab.Advanced.Exceptions;
 using NCrontab.Advanced.Extensions;
 using NCrontab.Advanced.Interfaces;
 
@@ -8,7 +9,7 @@ namespace NCrontab.Advanced.Filters
     /// <summary>
     /// Handles filtering for the last specified day of the week in the month
     /// </summary>
-    class LastDayOfWeekInMonthFilter : ICronFilter
+    public class LastDayOfWeekInMonthFilter : ICronFilter
     {
         public CrontabFieldKind Kind { get; }
         public int DayOfWeek { get; }
@@ -21,6 +22,9 @@ namespace NCrontab.Advanced.Filters
         /// <param name="kind">The crontab field kind to associate with this filter</param>
         public LastDayOfWeekInMonthFilter(int dayOfWeek, CrontabFieldKind kind)
         {
+            if (kind != CrontabFieldKind.DayOfWeek)
+                throw new CrontabException(string.Format("<{0}L> can only be used in the Day of Week field.", dayOfWeek));
+
             DayOfWeek = dayOfWeek;
             DateTimeDayOfWeek = dayOfWeek.ToDayOfWeek();
             Kind = kind;
