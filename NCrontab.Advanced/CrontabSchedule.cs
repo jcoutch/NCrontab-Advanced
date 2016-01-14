@@ -48,47 +48,114 @@ namespace NCrontab.Advanced
 
         public DateTime GetNextOccurrence(DateTime baseValue, DateTime endValue, int timeout = 0)
         {
-            var task = Task.Factory.StartNew(() => InternalGetNextOccurence(baseValue, endValue));
-
             // If no timeout specified, let it run!
-            if (timeout == 0) return task.Result;
+            if (timeout <= 0)
+                return InternalGetNextOccurence(baseValue, endValue);
 
             // If a timeout is specified, wait, and if it can't find within the alloted time, throw an exception.
+            var task = Task.Factory.StartNew(() => InternalGetNextOccurence(baseValue, endValue));
             var foundValue = task.Wait(timeout);
             if (!foundValue) throw new TimeoutException("GetNextOccurrence timed out while finding next value");
 
             return task.Result;
         }
 
+        private int Increment(IEnumerable<ITimeFilter> filters, int value, int defaultValue, out bool overflow)
+        {
+            var nextValue = filters.Select(x => x.Next(value)).Where(x => x > value).Min() ?? defaultValue;
+            overflow = nextValue <= value;
+            return nextValue;
+        }
+
+        private DateTime MinDate(DateTime newValue, DateTime endValue)
+        {
+            return newValue >= endValue ? endValue : newValue;
+        }
+
         private DateTime InternalGetNextOccurence(DateTime baseValue, DateTime endValue)
         {
-            // TODO: Need to optimize this method!
             var newValue = baseValue;
+            var overflow = true;
 
-            // If there's milliseconds, move to the next second
-            if (newValue.Millisecond > 0)
+            var isSecondFormat = Format == CronStringFormat.WithSeconds || Format == CronStringFormat.WithSecondsAndYears;
+            var isYearFormat = Format == CronStringFormat.WithYears || Format == CronStringFormat.WithSecondsAndYears;
+
+            // First things first - trim off any time components we don't need
+            newValue = newValue.AddMilliseconds(-newValue.Millisecond);
+            if (!isSecondFormat) newValue = newValue.AddSeconds(-newValue.Second);
+
+            var minuteFilters = Filters[CrontabFieldKind.Minute].Where(x => x is ITimeFilter).Cast<ITimeFilter>().ToList();
+            var hourFilters = Filters[CrontabFieldKind.Hour].Where(x => x is ITimeFilter).Cast<ITimeFilter>().ToList();
+
+            var firstSecondValue = newValue.Second;
+            var firstMinuteValue = minuteFilters.Select(x => x.First()).Min();
+            var firstHourValue = hourFilters.Select(x => x.First()).Min();
+
+            var newSeconds = newValue.Second;
+            if (isSecondFormat)
             {
-                newValue = newValue.AddMilliseconds(1000 - newValue.Millisecond);
+                var secondFilters = Filters[CrontabFieldKind.Second].Where(x => x is ITimeFilter).Cast<ITimeFilter>().ToList();
+                firstSecondValue = secondFilters.Select(x => x.First()).Min();
+                newSeconds = Increment(secondFilters, newValue.Second, firstSecondValue, out overflow);
+                newValue = new DateTime(newValue.Year, newValue.Month, newValue.Day, newValue.Hour, newValue.Minute, newSeconds);
+                if (!overflow && !IsMatch(newValue))
+                {
+                    newSeconds = firstSecondValue;
+                    newValue = new DateTime(newValue.Year, newValue.Month, newValue.Day, newValue.Hour, newValue.Minute, newSeconds);
+                    overflow = true;
+                }
+                if (!overflow) return MinDate(newValue, endValue);
             }
 
-            if (!(Format == CronStringFormat.WithSeconds || Format == CronStringFormat.WithSecondsAndYears))
+            var newMinutes = Increment(minuteFilters, newValue.Minute + (overflow ? 0 : -1), firstMinuteValue, out overflow);
+            newValue = new DateTime(newValue.Year, newValue.Month, newValue.Day, newValue.Hour, newMinutes, overflow ? firstSecondValue : newSeconds);
+            if (!overflow && !IsMatch(newValue))
             {
-                // Because this mode doesn't handle the resolution of seconds, move to the next minute.
-                newValue = newValue.AddSeconds(60 - newValue.Second);
+                newSeconds = firstSecondValue;
+                newMinutes = firstMinuteValue;
+                newValue = new DateTime(newValue.Year, newValue.Month, newValue.Day, newValue.Hour, newMinutes, firstSecondValue);
+                overflow = true;
+            }
+            if (!overflow) return MinDate(newValue, endValue);
+
+            var newHours = Increment(hourFilters, newValue.Hour + (overflow ? 0 : -1), firstHourValue, out overflow);
+            newValue = new DateTime(newValue.Year, newValue.Month, newValue.Day, newHours,
+                overflow ? firstMinuteValue : newMinutes,
+                overflow ? firstSecondValue : newSeconds);
+
+            if (!overflow && !IsMatch(newValue))
+            {
+                newValue = new DateTime(newValue.Year, newValue.Month, newValue.Day, firstHourValue, firstMinuteValue, firstSecondValue);
+                overflow = true;
             }
 
-            while (baseValue < endValue && (baseValue == newValue || !IsMatch(newValue)))
+            if (!overflow) return MinDate(newValue, endValue);
+
+            // Sooo, this is where things get more complicated.
+            // Since the filtering of days relies on what month/year you're in
+            // (for weekday/nth day filters), we'll only increment the day, and
+            // check all day/month/year filters.  Might be a litle slow, but we
+            // won't miss any days that way.
+
+            // Also, if we increment to the next day, we need to set the hour, minute and second
+            // fields to their "first" values, since that would be the earliest they'd run.  We
+            // only have to do this after the initial AddDays call.  FYI - they're already at their
+            // first values if overflowHour = True.  :-)
+
+            newValue = newValue.AddDays(1);
+            while (!(IsMatch(newValue, CrontabFieldKind.Day) && IsMatch(newValue, CrontabFieldKind.DayOfWeek) && IsMatch(newValue, CrontabFieldKind.Month) && (!isYearFormat || IsMatch(newValue, CrontabFieldKind.Year))))
             {
-                if (Format == CronStringFormat.WithSeconds || Format == CronStringFormat.WithSecondsAndYears)
-                    newValue = newValue.AddSeconds(1);
-                else
-                    newValue = newValue.AddMinutes(1);
+                if (newValue >= endValue) return MinDate(newValue, endValue);
+
+                // This feels so dirty.  This is to catch the odd case where you specify
+                // 12/31/9999 23:59:59.999 as your end date, and you don't have any matches,
+                // so it reaches the max value of DateTime and throws an exception.
+                try { newValue = newValue.AddDays(1); } catch {return endValue; }
             }
 
-            if (newValue >= endValue) return endValue;
-
-            return newValue;
+            return MinDate(newValue, endValue);
         }
+
 
         public IEnumerable<DateTime> GetNextOccurrences(DateTime baseTime, DateTime endTime)
         {
@@ -105,6 +172,11 @@ namespace NCrontab.Advanced
             return Filters.All(fieldKind =>
                 fieldKind.Value.Any(filter => filter.IsMatch(value))
             );
+        }
+
+        public bool IsMatch(DateTime value, CrontabFieldKind kind)
+        {
+            return Filters.Where(x => x.Key == kind).SelectMany(x => x.Value).Any(filter => filter.IsMatch(value));
         }
 
         private void JoinFilters(List<string> paramList, CrontabFieldKind kind)

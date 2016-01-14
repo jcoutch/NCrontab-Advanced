@@ -1,5 +1,6 @@
 ﻿using System;
 using NCrontab.Advanced.Enumerations;
+using NCrontab.Advanced.Exceptions;
 using NCrontab.Advanced.Interfaces;
 
 namespace NCrontab.Advanced.Filters
@@ -7,7 +8,7 @@ namespace NCrontab.Advanced.Filters
     /// <summary>
     /// Handles the filter instance where the user specifies a * (for any value)
     /// </summary>
-    class AnyFilter : ICronFilter
+    class AnyFilter : ICronFilter, ITimeFilter
     {
         public CrontabFieldKind Kind { get; }
 
@@ -29,6 +30,32 @@ namespace NCrontab.Advanced.Filters
         public bool IsMatch(DateTime value)
         {
             return true;
+        }
+
+        public int? Next(int value)
+        {
+            var max = Constants.MaximumDateTimeValues[Kind];
+            if (Kind == CrontabFieldKind.Day
+             || Kind == CrontabFieldKind.Month
+             || Kind == CrontabFieldKind.DayOfWeek
+             || Kind == CrontabFieldKind.Year)
+                throw new CrontabException("Cannot call First for Day, Month, DayOfWeek or Year types");
+
+            var newValue = (int?) value + 1;
+            if (newValue >= max) newValue = null;
+
+            return newValue;
+        }
+
+        public int First()
+        {
+            if (Kind == CrontabFieldKind.Day
+             || Kind == CrontabFieldKind.Month
+             || Kind == CrontabFieldKind.DayOfWeek
+             || Kind == CrontabFieldKind.Year)
+                throw new CrontabException("Cannot call First for Day, Month, DayOfWeek or Year types");
+
+            return 0;
         }
 
         public override string ToString()

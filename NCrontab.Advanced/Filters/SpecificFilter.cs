@@ -8,7 +8,7 @@ namespace NCrontab.Advanced.Filters
     /// <summary>
     /// Handles filtering for a specific value
     /// </summary>
-    public class SpecificFilter : ICronFilter
+    public class SpecificFilter : ICronFilter, ITimeFilter
     {
         public CrontabFieldKind Kind { get; }
         public int SpecificValue { get; }
@@ -46,6 +46,17 @@ namespace NCrontab.Advanced.Filters
 
             return evalValue == SpecificValue;
         }
+
+        public int? Next(int value)
+        {
+            return SpecificValue;
+        }
+
+        public int First()
+        {
+            return SpecificValue;
+        }
+
 
         public override string ToString()
         {

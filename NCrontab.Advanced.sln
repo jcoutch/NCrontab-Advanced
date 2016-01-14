@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrontab.Advanced", "NCront
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrontab.Advanced.Tests", "NCrontab.Advanced.Tests\NCrontab.Advanced.Tests.csproj", "{CCAD3304-0882-4244-8F66-1890126AC5C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrontab.ConsoleTest", "NCrontab.ConsoleTest\NCrontab.ConsoleTest.csproj", "{743789D0-7C4E-4D2F-8554-987DE28DCDD4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{CCAD3304-0882-4244-8F66-1890126AC5C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCAD3304-0882-4244-8F66-1890126AC5C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CCAD3304-0882-4244-8F66-1890126AC5C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{743789D0-7C4E-4D2F-8554-987DE28DCDD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{743789D0-7C4E-4D2F-8554-987DE28DCDD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{743789D0-7C4E-4D2F-8554-987DE28DCDD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{743789D0-7C4E-4D2F-8554-987DE28DCDD4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

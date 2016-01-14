@@ -10,11 +10,13 @@ namespace NCrontab.Advanced.Filters
     /// <summary>
     /// Handles filtering ranges (i.e. 1-5)
     /// </summary>
-    public class StepFilter : ICronFilter
+    public class StepFilter : ICronFilter, ITimeFilter
     {
         public CrontabFieldKind Kind { get; }
         public int Start { get; }
         public int Step { get; }
+
+        private int? FirstCache { get; set; }
 
         /// <summary>
         /// Returns a list of specific filters that represents this step filter
@@ -73,6 +75,51 @@ namespace NCrontab.Advanced.Filters
         private bool IsMatch(int evalValue)
         {
             return (evalValue - Start) % Step == 0;
+        }
+
+        public int? Next(int value)
+        {
+            if (Kind == CrontabFieldKind.Day
+             || Kind == CrontabFieldKind.Month
+             || Kind == CrontabFieldKind.DayOfWeek
+             || Kind == CrontabFieldKind.Year)
+                throw new CrontabException("Cannot call First for Day, Month, DayOfWeek or Year types");
+
+            var max = Constants.MaximumDateTimeValues[Kind];
+
+            var newValue = (int?) value + 1;
+            while (newValue < max && !IsMatch(newValue.Value))
+                newValue++;
+
+            if (newValue >= max) newValue = null;
+
+            return newValue;
+        }
+
+        public int First()
+        {
+            if (FirstCache.HasValue) return FirstCache.Value;
+
+            if (Kind == CrontabFieldKind.Day
+             || Kind == CrontabFieldKind.Month
+             || Kind == CrontabFieldKind.DayOfWeek
+             || Kind == CrontabFieldKind.Year)
+                throw new CrontabException("Cannot call First for Day, Month, DayOfWeek or Year types");
+
+            var max = Constants.MaximumDateTimeValues[Kind];
+
+            var newValue = 0;
+            while (newValue < max && !IsMatch(newValue))
+                newValue++;
+
+            if (newValue > max)
+                throw new CrontabException(string.Format("Next value for {0} on field {1} could not be found!",
+                    this.ToString(),
+                    Enum.GetName(typeof(CrontabFieldKind), Kind))
+                );
+
+            FirstCache = newValue;
+            return newValue;
         }
 
         public override string ToString()
