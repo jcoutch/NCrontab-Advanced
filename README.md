@@ -1,6 +1,6 @@
 # NCrontab Advanced
 
-**If you have any problems, make sure to file an issue here on Github.  Documentation coming soon.**
+**If you have any problems, make sure to file an issue here on Github.**
 
 We were looking to implement [NCrontab](https://github.com/atifaziz/NCrontab) for a project, but found it had a few shortcomings:
 * No support for #, L and W
@@ -30,4 +30,4 @@ Day of week  | 0-6 or SUN-SAT  | * , - / L #
 Year         | 0001–9999       | * , - /
 ```
 
-Instructions for using these expressions are on the [Cron Expresssions page on Wikipedia](https://en.wikipedia.org/wiki/Cron#CRON_expression).
+Instructions for how cron expressions are formatted are on the [Cron Expresssions page on Wikipedia](https://en.wikipedia.org/wiki/Cron#CRON_expression), and documentation for using NCrontab.Advanced is over on the [Getting Started wiki](https://github.com/jcoutch/NCrontab-Advanced/wiki/Getting-started)!
