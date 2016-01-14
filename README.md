@@ -10,9 +10,6 @@ So, I started looking into adding these features.  After some digging through th
 
 In comes NCrontab-Advanced - a complete re-write of the parsing engine.  Along with the re-write come the following features:
 
-**Timeouts**
-Ever try to get the next instance of a date from a cron string that has no next instance?  Now you can specify a timeout in milliseconds before GetNextOccurence times out and throws an exception.
-
 **Support for the following cron formats:**
 * `CronStringFormat.Default`: MINUTES HOURS DAYS MONTHS DAYS-OF-WEEK
 * `CronStringFormat.WithYears`: MINUTES HOURS DAYS MONTHS DAYS-OF-WEEK YEARS

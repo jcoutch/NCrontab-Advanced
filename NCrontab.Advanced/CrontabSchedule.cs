@@ -41,24 +41,25 @@ namespace NCrontab.Advanced
             return string.Join(" ", paramList);
         }
 
-        public DateTime GetNextOccurrence(DateTime baseValue, int timeout = 0)
+        public DateTime GetNextOccurrence(DateTime baseValue)
         {
-            return GetNextOccurrence(baseValue, DateTime.MaxValue, timeout);
+            return GetNextOccurrence(baseValue, DateTime.MaxValue);
         }
 
-        public DateTime GetNextOccurrence(DateTime baseValue, DateTime endValue, int timeout = 0)
+        public DateTime GetNextOccurrence(DateTime baseValue, DateTime endValue)
         {
-            // If no timeout specified, let it run!
-            if (timeout <= 0)
-                return InternalGetNextOccurence(baseValue, endValue);
-
-            // If a timeout is specified, wait, and if it can't find within the alloted time, throw an exception.
-            var task = Task.Factory.StartNew(() => InternalGetNextOccurence(baseValue, endValue));
-            var foundValue = task.Wait(timeout);
-            if (!foundValue) throw new TimeoutException("GetNextOccurrence timed out while finding next value");
-
-            return task.Result;
+            return InternalGetNextOccurence(baseValue, endValue);
         }
+        public IEnumerable<DateTime> GetNextOccurrences(DateTime baseTime, DateTime endTime)
+        {
+            for (var occurrence = GetNextOccurrence(baseTime, endTime);
+                 occurrence < endTime;
+                 occurrence = GetNextOccurrence(occurrence, endTime))
+            {
+                yield return occurrence;
+            }
+        }
+
 
         private int Increment(IEnumerable<ITimeFilter> filters, int value, int defaultValue, out bool overflow)
         {
@@ -154,17 +155,6 @@ namespace NCrontab.Advanced
             }
 
             return MinDate(newValue, endValue);
-        }
-
-
-        public IEnumerable<DateTime> GetNextOccurrences(DateTime baseTime, DateTime endTime)
-        {
-            for (var occurrence = GetNextOccurrence(baseTime, endTime);
-                 occurrence < endTime;
-                 occurrence = GetNextOccurrence(occurrence, endTime))
-            {
-                yield return occurrence;
-            }
         }
 
         public bool IsMatch(DateTime value)

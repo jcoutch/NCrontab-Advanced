@@ -467,13 +467,6 @@ namespace NCrontab.Advanced.Tests
             BadField("* * 3-l2 * * *", CronStringFormat.WithSeconds);
         }
 
-        [TestMethod]
-        public void TimeoutTest()
-        {
-            // This not-so-much tests out the timeout functionality, but that the tasks are fired correctly.
-            var parser = CrontabSchedule.Parse("* * * * *").GetNextOccurrence(DateTime.Parse("2015-1-1 00:00:00"), 1000);
-        }
-
         static void CronCall(string startTimeString, string cronExpression, string nextTimeString, CronStringFormat format)
         {
             var schedule = CrontabSchedule.Parse(cronExpression, format);
