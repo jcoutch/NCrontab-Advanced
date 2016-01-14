@@ -132,6 +132,9 @@ namespace NCrontab.Advanced
 
             if (!overflow) return MinDate(newValue, endValue);
 
+            List<ITimeFilter> yearFilters = null;
+            if (isYearFormat) yearFilters = Filters[CrontabFieldKind.Year].Where(x => x is ITimeFilter).Cast<ITimeFilter>().ToList();
+
             // Sooo, this is where things get more complicated.
             // Since the filtering of days relies on what month/year you're in
             // (for weekday/nth day filters), we'll only increment the day, and
@@ -143,14 +146,20 @@ namespace NCrontab.Advanced
             // only have to do this after the initial AddDays call.  FYI - they're already at their
             // first values if overflowHour = True.  :-)
 
-            newValue = newValue.AddDays(1);
+            // This feels so dirty.  This is to catch the odd case where you specify
+            // 12/31/9999 23:59:59.999 as your end date, and you don't have any matches,
+            // so it reaches the max value of DateTime and throws an exception.
+            try { newValue = newValue.AddDays(1); } catch { return endValue; }
+
             while (!(IsMatch(newValue, CrontabFieldKind.Day) && IsMatch(newValue, CrontabFieldKind.DayOfWeek) && IsMatch(newValue, CrontabFieldKind.Month) && (!isYearFormat || IsMatch(newValue, CrontabFieldKind.Year))))
             {
                 if (newValue >= endValue) return MinDate(newValue, endValue);
 
-                // This feels so dirty.  This is to catch the odd case where you specify
-                // 12/31/9999 23:59:59.999 as your end date, and you don't have any matches,
-                // so it reaches the max value of DateTime and throws an exception.
+                // In instances where the year is filtered, this will speed up the path to get to endValue
+                // (without having to actually go to endValue)
+                if (isYearFormat && yearFilters.Select(x => x.Next(newValue.Year - 1)).All(x => x == null)) return endValue;
+
+                // Ugh...have to do the try/catch again...
                 try { newValue = newValue.AddDays(1); } catch {return endValue; }
             }
 

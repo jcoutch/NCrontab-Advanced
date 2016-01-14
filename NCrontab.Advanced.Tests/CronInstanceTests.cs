@@ -8,6 +8,7 @@
 
 using System;
 using System.Globalization;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NCrontab.Advanced.Enumerations;
 using NCrontab.Advanced.Exceptions;
@@ -45,6 +46,22 @@ namespace NCrontab.Advanced.Tests
         public void SixPartAllTimeString()
         {
             Assert.AreEqual("* * * * * *", CrontabSchedule.Parse("* * * * * *", CronStringFormat.WithSeconds).ToString());
+        }
+
+        [TestMethod]
+        public void InvalidPatternCount()
+        {
+            Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse("* * * *", CronStringFormat.Default));
+            Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse("* * * * * *", CronStringFormat.Default));
+
+            Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse("* * * * *", CronStringFormat.WithSeconds));
+            Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse("* * * * * * *", CronStringFormat.WithSeconds));
+
+            Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse("* * * * *", CronStringFormat.WithYears));
+            Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse("* * * * * * *", CronStringFormat.WithYears));
+
+            Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse("* * * * * *", CronStringFormat.WithSecondsAndYears));
+            Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse("* * * * * * * *", CronStringFormat.WithSecondsAndYears));
         }
 
         [TestMethod]
@@ -465,6 +482,26 @@ namespace NCrontab.Advanced.Tests
         {
             BadField("* 3-l2 * * *", CronStringFormat.Default);
             BadField("* * 3-l2 * * *", CronStringFormat.WithSeconds);
+        }
+
+        [TestMethod]
+        public void MultipleInstancesTest()
+        {
+            var input = DateTime.Parse("2015-1-1 00:00:00");
+            var cronString = "30 8 17W Jan,February 4 2000-2050";
+
+            var parser = CrontabSchedule.Parse(cronString, CronStringFormat.WithYears);
+            var instances = parser.GetNextOccurrences(input, DateTime.MaxValue).ToList();
+            Assert.AreEqual(10, instances.Count, "Make sure only 10 instances were generated");
+
+            // Now we'll manually iterate through getting values, and check the 11th and 12th
+            // instance to make sure nothing blows up.
+            var newInput = input;
+            for (var i = 0; i < 10; i++)
+                newInput = parser.GetNextOccurrence(newInput);
+
+            Assert.IsTrue((newInput = parser.GetNextOccurrence(newInput)) == DateTime.MaxValue, "Make sure 11th instance is the endDate");
+            Assert.IsTrue((newInput = parser.GetNextOccurrence(newInput)) == DateTime.MaxValue, "Make sure 12th instance is the endDate");
         }
 
         static void CronCall(string startTimeString, string cronExpression, string nextTimeString, CronStringFormat format)

@@ -37,9 +37,8 @@ namespace NCrontab.Advanced.Filters
             var max = Constants.MaximumDateTimeValues[Kind];
             if (Kind == CrontabFieldKind.Day
              || Kind == CrontabFieldKind.Month
-             || Kind == CrontabFieldKind.DayOfWeek
-             || Kind == CrontabFieldKind.Year)
-                throw new CrontabException("Cannot call First for Day, Month, DayOfWeek or Year types");
+             || Kind == CrontabFieldKind.DayOfWeek)
+                throw new CrontabException("Cannot call Next for Day, Month or DayOfWeek types");
 
             var newValue = (int?) value + 1;
             if (newValue >= max) newValue = null;
@@ -51,9 +50,8 @@ namespace NCrontab.Advanced.Filters
         {
             if (Kind == CrontabFieldKind.Day
              || Kind == CrontabFieldKind.Month
-             || Kind == CrontabFieldKind.DayOfWeek
-             || Kind == CrontabFieldKind.Year)
-                throw new CrontabException("Cannot call First for Day, Month, DayOfWeek or Year types");
+             || Kind == CrontabFieldKind.DayOfWeek)
+                throw new CrontabException("Cannot call First for Day, Month or DayOfWeek types");
 
             return 0;
         }
