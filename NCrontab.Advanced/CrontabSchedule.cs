@@ -399,7 +399,14 @@ namespace NCrontab.Advanced
 
                 if (replaceVal != null && replaceVal.Count == 1)
                 {
-                    filter = filter.Substring(i);
+                    // missingFilter addresses when a filter string of "SUNL" is passed in,
+                    // which causes the isDigit/isLetter loop above to iterate through the end
+                    // of the string.  This catches the edge case, and re-appends L to the end.
+                    var missingFilter = "";
+                    if (filter.Length == i && filter.EndsWith("L") && kind == CrontabFieldKind.DayOfWeek)
+                        missingFilter = "L";
+
+                    filter = filter.Substring(i) + missingFilter;
                     var returnValue = replaceVal.First().Value;
                     if (returnValue > maxValue)
                         throw new CrontabException(string.Format("Value for {0} filter exceeded maximum value of {1}", Enum.GetName(typeof(CrontabFieldKind), kind), maxValue));

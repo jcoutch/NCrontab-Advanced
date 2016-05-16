@@ -317,6 +317,15 @@ namespace NCrontab.Advanced.Tests
                 new { startTime = "01/09/2003 23:45:00", inputString = "45 16 * * Mon#2", nextOccurence = "08/09/2003 16:45:00", cronStringFormat = CronStringFormat.Default },
                 new { startTime = "01/09/2003 23:45:00", inputString = "45 16 * * 2#4", nextOccurence = "23/09/2003 16:45:00", cronStringFormat = CronStringFormat.Default },
 
+                new { startTime = "01/01/2003 23:45:00", inputString = "0 0 * * 0L", nextOccurence = "26/01/2003 00:00:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "01/01/2003 23:45:00", inputString = "0 0 * * SUNL", nextOccurence = "26/01/2003 00:00:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "01/01/2003 23:45:00", inputString = "0 0 * * SUNDL", nextOccurence = "26/01/2003 00:00:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "01/01/2003 23:45:00", inputString = "0 0 * * SUNDAYL", nextOccurence = "26/01/2003 00:00:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "01/01/2003 23:45:00", inputString = "0 0 * * 6L", nextOccurence = "25/01/2003 00:00:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "01/01/2003 23:45:00", inputString = "0 0 * * SATL", nextOccurence = "25/01/2003 00:00:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "01/01/2003 23:45:00", inputString = "0 0 * * SATUL", nextOccurence = "25/01/2003 00:00:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "01/01/2003 23:45:00", inputString = "0 0 * * SATURDAYL", nextOccurence = "25/01/2003 00:00:00", cronStringFormat = CronStringFormat.Default },
+
                 // Leap year tests
 
                 new { startTime = "01/01/2000 12:00:00", inputString = "1 12 29 2 *", nextOccurence = "29/02/2000 12:01:00", cronStringFormat = CronStringFormat.Default },

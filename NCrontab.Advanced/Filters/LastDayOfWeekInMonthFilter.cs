@@ -34,7 +34,6 @@ namespace NCrontab.Advanced.Filters
         /// Checks if the value is accepted by the filter
         /// </summary>
         /// <param name="value">The value to check</param>
-        /// <param name="kind">The kind of field being evaluated</param>
         /// <returns>True if the value matches the condition, False if it does not match.</returns>
         public bool IsMatch(DateTime value)
         {
