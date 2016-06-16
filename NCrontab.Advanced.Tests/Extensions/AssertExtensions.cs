@@ -22,10 +22,10 @@ namespace NCrontab.Advanced.Tests.Extensions
             }
             catch (Exception e)
             {
-                throw new AssertFailedException(string.Format("Expected exception '{0}', but '{1}' was thrown\n\n{2}.  {3}", typeof(T).Name, e.GetType().Name, e, additionalInfo));
+                throw new AssertFailedException($"Expected exception '{typeof(T).Name}', but '{e.GetType().Name}' was thrown\n\n{e}.  {additionalInfo}");
             }
 
-            Assert.Fail(string.Format("Expected exception '{0}', but no exception was thrown.  {1}", typeof(T).Name, additionalInfo));
+            Assert.Fail($"Expected exception '{typeof(T).Name}', but no exception was thrown.  {additionalInfo}");
         }
     }
 }

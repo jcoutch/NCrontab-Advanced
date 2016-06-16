@@ -21,10 +21,10 @@ namespace NCrontab.Advanced.Filters
         public NearestWeekdayFilter(int specificValue, CrontabFieldKind kind)
         {
             if (specificValue <= 0 || specificValue > Constants.MaximumDateTimeValues[CrontabFieldKind.Day])
-                throw new CrontabException(string.Format("<{0}W> is out of bounds for the Day field.", specificValue));
+                throw new CrontabException($"<{specificValue}W> is out of bounds for the Day field.");
 
             if (kind != CrontabFieldKind.Day)
-                throw new CrontabException(string.Format("<{0}W> can only be used in the Day field.", specificValue));
+                throw new CrontabException($"<{specificValue}W> can only be used in the Day field.");
 
             SpecificValue = specificValue;
             Kind = kind;
@@ -75,7 +75,7 @@ namespace NCrontab.Advanced.Filters
 
         public override string ToString()
         {
-            return string.Format("{0}W", SpecificValue);
+            return $"{SpecificValue}W";
         }
     }
 }

@@ -244,9 +244,9 @@ namespace NCrontab.Advanced
 
             var expectedCount = Constants.ExpectedFieldCounts[format];
             if (instructions.Length > expectedCount)
-                throw new CrontabException(string.Format("The provided cron string <{0}> has too many parameters", cron));
+                throw new CrontabException($"The provided cron string <{cron}> has too many parameters");
             if (instructions.Length < expectedCount)
-                throw new CrontabException(string.Format("The provided cron string <{0}> has too few parameters", cron));
+                throw new CrontabException($"The provided cron string <{cron}> has too few parameters");
 
             var defaultFieldOffset = 0;
             if (format == CronStringFormat.WithSeconds || format == CronStringFormat.WithSecondsAndYears)
@@ -277,7 +277,7 @@ namespace NCrontab.Advanced
             }
             catch (Exception e)
             {
-                throw new CrontabException(string.Format("There was an error parsing '{0}' for the {1} field", field, Enum.GetName(typeof(CrontabFieldKind), kind)), e);
+                throw new CrontabException($"There was an error parsing '{field}' for the {Enum.GetName(typeof(CrontabFieldKind), kind)} field", e);
             }
         }
 
@@ -299,6 +299,8 @@ namespace NCrontab.Advanced
                     return new AnyFilter(kind);
                 }
 
+                // * * LW * *
+                // * * L * *
                 if (newFilter.StartsWith("L") && kind == CrontabFieldKind.Day)
                 {
                     newFilter = newFilter.Substring(1);
@@ -307,6 +309,9 @@ namespace NCrontab.Advanced
                     else
                         return new LastDayOfMonthFilter(kind);
                 }
+
+                if (newFilter == "?")
+                    return new BlankDayOfMonthOrWeekFilter(kind);
 
                 var firstValue = GetValue(ref newFilter, kind);
 
@@ -339,7 +344,7 @@ namespace NCrontab.Advanced
                         var secondValue = GetValue(ref newFilter, kind);
 
                         if (!string.IsNullOrEmpty(newFilter))
-                            throw new CrontabException(string.Format("Invalid filter '{0}'", filter));
+                            throw new CrontabException($"Invalid filter '{filter}'");
 
                         return new SpecificDayOfWeekInMonthFilter(firstValue, secondValue, kind);
                     }
@@ -355,11 +360,11 @@ namespace NCrontab.Advanced
                         break;
                 }
 
-                throw new CrontabException(string.Format("Invalid filter '{0}'", filter));
+                throw new CrontabException($"Invalid filter '{filter}'");
             }
             catch (Exception e)
             {
-                throw new CrontabException(string.Format("Invalid filter '{0}'.  See inner exception for details.", filter), e);
+                throw new CrontabException($"Invalid filter '{filter}'. See inner exception for details.", e);
             }
         }
 
@@ -385,7 +390,7 @@ namespace NCrontab.Advanced
                 filter = filter.Substring(i);
                 var returnValue = value;
                 if (returnValue > maxValue)
-                    throw new CrontabException(string.Format("Value for {0} filter exceeded maximum value of {1}", Enum.GetName(typeof(CrontabFieldKind), kind), maxValue));
+                    throw new CrontabException($"Value for {Enum.GetName(typeof(CrontabFieldKind), kind)} filter exceeded maximum value of {maxValue}");
                 return returnValue;
             }
             else
@@ -409,7 +414,7 @@ namespace NCrontab.Advanced
                     filter = filter.Substring(i) + missingFilter;
                     var returnValue = replaceVal.First().Value;
                     if (returnValue > maxValue)
-                        throw new CrontabException(string.Format("Value for {0} filter exceeded maximum value of {1}", Enum.GetName(typeof(CrontabFieldKind), kind), maxValue));
+                        throw new CrontabException($"Value for {Enum.GetName(typeof(CrontabFieldKind), kind)} filter exceeded maximum value of {maxValue}");
                     return returnValue;
                 }
             }

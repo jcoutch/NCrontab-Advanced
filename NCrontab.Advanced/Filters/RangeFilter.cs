@@ -37,13 +37,13 @@ namespace NCrontab.Advanced.Filters
             var maxValue = Constants.MaximumDateTimeValues[kind];
 
             if (start < 0 || start > maxValue)
-                throw new CrontabException(string.Format("Start = {0} is out of bounds for <{1}> field", start, Enum.GetName(typeof(CrontabFieldKind), kind)));
+                throw new CrontabException($"Start = {start} is out of bounds for <{Enum.GetName(typeof(CrontabFieldKind), kind)}> field");
 
             if (end < 0 || end > maxValue)
-                throw new CrontabException(string.Format("End = {0} is out of bounds for <{1}> field", end, Enum.GetName(typeof(CrontabFieldKind), kind)));
+                throw new CrontabException($"End = {end} is out of bounds for <{Enum.GetName(typeof(CrontabFieldKind), kind)}> field");
 
             if (steps != null && (steps <= 0 || steps > maxValue))
-                throw new CrontabException(string.Format("Steps = {0} is out of bounds for <{1}> field", steps, Enum.GetName(typeof(CrontabFieldKind), kind)));
+                throw new CrontabException($"Steps = {steps} is out of bounds for <{Enum.GetName(typeof(CrontabFieldKind), kind)}> field");
 
             Start = start;
             End = end;
@@ -121,10 +121,7 @@ namespace NCrontab.Advanced.Filters
                 newValue++;
 
             if (newValue > max)
-                throw new CrontabException(string.Format("Next value for {0} on field {1} could not be found!",
-                    this.ToString(),
-                    Enum.GetName(typeof(CrontabFieldKind), Kind))
-                );
+                throw new CrontabException($"Next value for {this.ToString()} on field {Enum.GetName(typeof(CrontabFieldKind), Kind)} could not be found!");
 
             FirstCache = newValue;
             return newValue;
@@ -132,10 +129,7 @@ namespace NCrontab.Advanced.Filters
 
         public override string ToString()
         {
-            if (Steps.HasValue)
-                return string.Format("{0}-{1}/{2}", Start, End, Steps);
-            else
-                return string.Format("{0}-{1}", Start, End);
+            return (Steps.HasValue) ? $"{Start}-{End}/{Steps}" : $"{Start}-{End}";
         }
     }
 }

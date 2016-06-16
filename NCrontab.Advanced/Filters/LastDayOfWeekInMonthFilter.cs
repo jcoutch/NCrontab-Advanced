@@ -8,6 +8,9 @@ namespace NCrontab.Advanced.Filters
 {
     /// <summary>
     /// Handles filtering for the last specified day of the week in the month
+    /// <remarks>
+    /// When used in the day-of-week field, it allows you to specify constructs such as "the last Friday" ("5L") of a given month.
+    /// </remarks>
     /// </summary>
     public class LastDayOfWeekInMonthFilter : ICronFilter
     {
@@ -23,7 +26,7 @@ namespace NCrontab.Advanced.Filters
         public LastDayOfWeekInMonthFilter(int dayOfWeek, CrontabFieldKind kind)
         {
             if (kind != CrontabFieldKind.DayOfWeek)
-                throw new CrontabException(string.Format("<{0}L> can only be used in the Day of Week field.", dayOfWeek));
+                throw new CrontabException($"<{dayOfWeek}L> can only be used in the Day of Week field.");
 
             DayOfWeek = dayOfWeek;
             DateTimeDayOfWeek = dayOfWeek.ToDayOfWeek();
@@ -42,7 +45,7 @@ namespace NCrontab.Advanced.Filters
 
         public override string ToString()
         {
-            return string.Format("{0}L", DayOfWeek);
+            return $"{DayOfWeek}L";            
         }
 
     }

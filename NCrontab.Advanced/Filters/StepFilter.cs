@@ -8,7 +8,10 @@ using NCrontab.Advanced.Interfaces;
 namespace NCrontab.Advanced.Filters
 {
     /// <summary>
-    /// Handles filtering ranges (i.e. 1-5)
+    /// Handles step values (i.e. */5, 2/7)
+    /// <remarks>
+    /// For example, */5 in the minutes field indicates every 5 minutes
+    /// </remarks>
     /// </summary>
     public class StepFilter : ICronFilter, ITimeFilter
     {
@@ -34,7 +37,7 @@ namespace NCrontab.Advanced.Filters
             var maxValue = Constants.MaximumDateTimeValues[kind];
 
             if (step <= 0 || step > maxValue)
-                throw new CrontabException(string.Format("Steps = {0} is out of bounds for <{1}> field", step, Enum.GetName(typeof(CrontabFieldKind), kind)));
+                throw new CrontabException($"Steps = {step} is out of bounds for <{Enum.GetName(typeof(CrontabFieldKind), kind)}> field");
 
             Start = start;
             Step = step;
@@ -111,10 +114,7 @@ namespace NCrontab.Advanced.Filters
                 newValue++;
 
             if (newValue > max)
-                throw new CrontabException(string.Format("Next value for {0} on field {1} could not be found!",
-                    this.ToString(),
-                    Enum.GetName(typeof(CrontabFieldKind), Kind))
-                );
+                throw new CrontabException($"Next value for {this.ToString()} on field {Enum.GetName(typeof(CrontabFieldKind), Kind)} could not be found!");
 
             FirstCache = newValue;
             return newValue;
@@ -122,7 +122,8 @@ namespace NCrontab.Advanced.Filters
 
         public override string ToString()
         {
-            return string.Format("{0}/{1}", Start == 0 ? "*" : Start.ToString(), Step);
+            string startString = Start == 0 ? "*" : Start.ToString();
+            return $"{startString}/{Step}";
         }
     }
 }

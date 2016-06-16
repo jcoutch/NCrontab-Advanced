@@ -25,10 +25,10 @@ namespace NCrontab.Advanced.Filters
         public SpecificDayOfWeekInMonthFilter(int dayOfWeek, int weekNumber, CrontabFieldKind kind)
         {
             if (weekNumber <= 0 || weekNumber > 5)
-                throw new CrontabException(string.Format("Week number = {0} is out of bounds.", weekNumber));
+                throw new CrontabException($"Week number = {0} is out of bounds.");
 
             if (kind != CrontabFieldKind.DayOfWeek)
-                throw new CrontabException(string.Format("<{0}#{1}> can only be used in the Day of Week field.", dayOfWeek, weekNumber));
+                throw new CrontabException($"<{dayOfWeek}#{weekNumber}> can only be used in the Day of Week field.");
 
             DayOfWeek = dayOfWeek;
             DateTimeDayOfWeek = dayOfWeek.ToDayOfWeek();
@@ -66,7 +66,7 @@ namespace NCrontab.Advanced.Filters
 
         public override string ToString()
         {
-            return string.Format("{0}#{1}", DayOfWeek, WeekNumber);
+            return $"{DayOfWeek}#{WeekNumber}";            
         }
 
     }
