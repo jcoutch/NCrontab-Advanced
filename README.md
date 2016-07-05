@@ -24,9 +24,9 @@ Field name   | Allowed values  | Allowed special characters
 ------------------------------------------------------------
 Minutes      | 0-59            | * , - /
 Hours        | 0-23            | * , - /
-Day of month | 1-31            | * , - / L W
+Day of month | 1-31            | * , - / ? L W
 Month        | 1-12 or JAN-DEC | * , - /
-Day of week  | 0-6 or SUN-SAT  | * , - / L #
+Day of week  | 0-6 or SUN-SAT  | * , - / ? L #
 Year         | 0001–9999       | * , - /
 ```
 
