@@ -299,6 +299,8 @@ namespace NCrontab.Advanced
                     return new AnyFilter(kind);
                 }
 
+                // * * LW * *
+                // * * L * *
                 if (newFilter.StartsWith("L") && kind == CrontabFieldKind.Day)
                 {
                     newFilter = newFilter.Substring(1);
@@ -307,6 +309,9 @@ namespace NCrontab.Advanced
                     else
                         return new LastDayOfMonthFilter(kind);
                 }
+
+                if (newFilter == "?")
+                    return new BlankDayOfMonthOrWeekFilter(kind);
 
                 var firstValue = GetValue(ref newFilter, kind);
 

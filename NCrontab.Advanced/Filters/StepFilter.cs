@@ -8,7 +8,10 @@ using NCrontab.Advanced.Interfaces;
 namespace NCrontab.Advanced.Filters
 {
     /// <summary>
-    /// Handles filtering ranges (i.e. 1-5)
+    /// Handles step values (i.e. */5, 2/7)
+    /// <remarks>
+    /// For example, */5 in the minutes field indicates every 5 minutes
+    /// </remarks>
     /// </summary>
     public class StepFilter : ICronFilter, ITimeFilter
     {

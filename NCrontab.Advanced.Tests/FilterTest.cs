@@ -298,5 +298,23 @@ namespace NCrontab.Advanced.Tests
         }
 
         #endregion
+
+        [TestMethod]
+        public void BlankDayOfMonthOrWeekFilterInvalidState()
+        {
+            var values = new CrontabFieldKind[] {
+                CrontabFieldKind.Hour,
+                CrontabFieldKind.Minute,
+                CrontabFieldKind.Month,
+                CrontabFieldKind.Second,
+                CrontabFieldKind.Year
+            };
+
+            foreach (var val in values)
+                Assert2.Throws<CrontabException>(() => new BlankDayOfMonthOrWeekFilter(val), "Ensure BlankDayOfMonthOrWeekFilter can't be instantiated with <{0}>", Enum.GetName(typeof(CrontabFieldKind), val));
+
+            Assert.IsTrue(new BlankDayOfMonthOrWeekFilter(CrontabFieldKind.Day).IsMatch(DateTime.Now));
+            Assert.IsTrue(new BlankDayOfMonthOrWeekFilter(CrontabFieldKind.DayOfWeek).IsMatch(DateTime.UtcNow));
+        }
     }
 }
