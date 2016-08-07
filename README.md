@@ -16,6 +16,14 @@ In comes NCrontab-Advanced - a complete re-write of the parsing engine.  Along w
 * `CronStringFormat.WithSeconds`: SECONDS MINUTES HOURS DAYS MONTHS DAYS-OF-WEEK
 * `CronStringFormat.WithSecondsAndYears`: SECONDS MINUTES HOURS DAYS MONTHS DAYS-OF-WEEK YEARS
 
+**How to build project**
+The project can be opened using Visual Studio 2015, or Visual Studio Code.  You can either build using MSBuild against the solution, or using .NET Core's `dotnet` command:
+
+```
+# Run this from the NCrontab.Advanced folder (which contains NCrontab.Advanced.csproj
+dotnet restore
+dotnet build
+```
 
 **Support for the following cron expressions:**
 
