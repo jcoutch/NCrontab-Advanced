@@ -53,8 +53,9 @@
     <Compile Include="Constants\CronStringFormat.cs" />
     <Compile Include="Exceptions\CrontabException.cs" />
     <Compile Include="Extensions\DayOfWeekExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Filters\AnyFilter.cs" />
-	<Compile Include="Filters\BlankDayOfMonthOrWeekFilter.cs" />
+    <Compile Include="Filters\BlankDayOfMonthOrWeekFilter.cs" />
     <Compile Include="Filters\LastDayOfMonthFilter.cs" />
     <Compile Include="Filters\LastDayOfWeekInMonthFilter.cs" />
     <Compile Include="Filters\LastWeekdayOfMonthFilter.cs" />

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using NCrontab.Advanced.Enumerations;
 using NCrontab.Advanced.Exceptions;
 using NCrontab.Advanced.Interfaces;

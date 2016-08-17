@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using NCrontab.Advanced.Enumerations;
 using NCrontab.Advanced.Exceptions;
 using NCrontab.Advanced.Extensions;
@@ -38,7 +37,7 @@ namespace NCrontab.Advanced
             if (Format == CronStringFormat.WithYears || Format == CronStringFormat.WithSecondsAndYears)
                 JoinFilters(paramList, CrontabFieldKind.Second);
 
-            return string.Join(" ", paramList);
+            return string.Join(" ", paramList.ToArray());
         }
 
         public DateTime GetNextOccurrence(DateTime baseValue)
@@ -183,7 +182,7 @@ namespace NCrontab.Advanced
             paramList.Add(
                 string.Join(",", Filters
                     .Where(x => x.Key == kind)
-                    .SelectMany(x => x.Value.Select(y => y.ToString()))
+                    .SelectMany(x => x.Value.Select(y => y.ToString())).ToArray()
                 )
             );
         }
@@ -226,16 +225,16 @@ namespace NCrontab.Advanced
 
         private static List<SpecificFilter> GetSpecificFilters(Dictionary<CrontabFieldKind, List<ICronFilter>> filters, CrontabFieldKind kind)
         {
-            return filters[kind].Where(x => x.GetType() == typeof(SpecificFilter)).Union(
+            return filters[kind].Where(x => x.GetType() == typeof(SpecificFilter)).Cast<SpecificFilter>().Union(
                 filters[kind].Where(x => x.GetType() == typeof(RangeFilter)).SelectMany(x => ((RangeFilter)x).SpecificFilters)
                 ).Union(
                     filters[kind].Where(x => x.GetType() == typeof(StepFilter)).SelectMany(x => ((StepFilter)x).SpecificFilters)
-                ).Cast<SpecificFilter>().ToList();
+                ).ToList();
         }
 
         private static Dictionary<CrontabFieldKind, List<ICronFilter>> ParseToDictionary(string cron, CronStringFormat format)
         {
-            if (string.IsNullOrWhiteSpace(cron))
+            if (cron.IsNullOrWhiteSpace())
                 throw new CrontabException("The provided cron string is null, empty or contains only whitespace");
 
             var fields = new Dictionary<CrontabFieldKind, List<ICronFilter>>();
