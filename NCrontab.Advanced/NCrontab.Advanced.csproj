@@ -60,6 +60,7 @@
     <Compile Include="Filters\LastDayOfWeekInMonthFilter.cs" />
     <Compile Include="Filters\LastWeekdayOfMonthFilter.cs" />
     <Compile Include="Filters\NearestWeekdayFilter.cs" />
+    <Compile Include="Filters\SpecificYearFilter.cs" />
     <Compile Include="Filters\StepFilter.cs" />
     <Compile Include="Filters\RangeFilter.cs" />
     <Compile Include="Filters\SpecificDayOfWeekInMonthFilter.cs" />
@@ -75,6 +76,7 @@
       <Link>README.md</Link>
     </None>
     <None Include="NCrontab.Advanced.nuspec" />
+    <None Include="project.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

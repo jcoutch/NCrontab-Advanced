@@ -35,7 +35,7 @@ namespace NCrontab.Advanced
             JoinFilters(paramList, CrontabFieldKind.DayOfWeek);
 
             if (Format == CronStringFormat.WithYears || Format == CronStringFormat.WithSecondsAndYears)
-                JoinFilters(paramList, CrontabFieldKind.Second);
+                JoinFilters(paramList, CrontabFieldKind.Year);
 
             return string.Join(" ", paramList.ToArray());
         }
@@ -159,7 +159,7 @@ namespace NCrontab.Advanced
                 if (isYearFormat && yearFilters.Select(x => x.Next(newValue.Year - 1)).All(x => x == null)) return endValue;
 
                 // Ugh...have to do the try/catch again...
-                try { newValue = newValue.AddDays(1); } catch {return endValue; }
+                try { newValue = newValue.AddDays(1); } catch { return endValue; }
             }
 
             return MinDate(newValue, endValue);
@@ -315,7 +315,12 @@ namespace NCrontab.Advanced
                 var firstValue = GetValue(ref newFilter, kind);
 
                 if (string.IsNullOrEmpty(newFilter))
-                    return new SpecificFilter(firstValue, kind);
+                {
+                    if (kind == CrontabFieldKind.Year)
+                        return new SpecificYearFilter(firstValue, kind);
+                    else
+                        return new SpecificFilter(firstValue, kind);
+                }
 
                 switch (newFilter[0])
                 {

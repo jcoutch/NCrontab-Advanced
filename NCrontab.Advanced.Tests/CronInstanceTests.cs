@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -558,6 +559,22 @@ namespace NCrontab.Advanced.Tests
 
             Assert.IsTrue((newInput = parser.GetNextOccurrence(newInput)) == DateTime.MaxValue, "Make sure 11th instance is the endDate");
             Assert.IsTrue((newInput = parser.GetNextOccurrence(newInput)) == DateTime.MaxValue, "Make sure 12th instance is the endDate");
+        }
+
+        [TestMethod]
+        public void NoNextInstanceTest()
+        {
+            var stopWatch = new Stopwatch();
+
+            var cron = NCrontab.Advanced.CrontabSchedule.Parse("0 0 1 1 * 0001", NCrontab.Advanced.Enumerations.CronStringFormat.WithYears);
+            var date = DateTime.Parse("0001-01-01");
+
+            stopWatch.Start();
+            var result = cron.GetNextOccurrence(date);
+            stopWatch.Stop();
+
+            Assert.AreEqual(DateTime.MaxValue, result, "Next date returned is end date");
+            Assert.IsFalse(stopWatch.ElapsedMilliseconds > 250, string.Format("Elapsed time should not exceed 250ms (was {0} ms)", stopWatch.ElapsedMilliseconds));
         }
 
         static void CronCall(string startTimeString, string cronExpression, string nextTimeString, CronStringFormat format)

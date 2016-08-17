@@ -47,7 +47,7 @@ namespace NCrontab.Advanced.Filters
             return evalValue == SpecificValue;
         }
 
-        public int? Next(int value)
+        public virtual int? Next(int value)
         {
             return SpecificValue;
         }
