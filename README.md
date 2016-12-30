@@ -1,4 +1,4 @@
-# NCrontab Advanced
+﻿# NCrontab Advanced
 
 **If you have any problems, make sure to file an issue here on Github.**
 
@@ -21,10 +21,12 @@ In comes NCrontab-Advanced - a complete re-write of the parsing engine.  Along w
 The project can be opened using Visual Studio 2015, or Visual Studio Code.  You can either build using MSBuild against the solution, or using .NET Core's `dotnet` command:
 
 ```
-# Run this from the NCrontab.Advanced folder (which contains NCrontab.Advanced.csproj
+# Run this from the NCrontab.Advanced folder (which contains NCrontab.Advanced.csproj)
 dotnet restore
 dotnet build
 ```
+
+NOTE - If you're building via `dotnet`, make sure you either comment out the `net35` section in project.json, or install the .NET Framework v3.5 (it's a supported framework by the Nuget package.)
 
 **Support for the following cron expressions:**
 
