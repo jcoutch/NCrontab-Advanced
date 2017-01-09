@@ -8,7 +8,7 @@ namespace NCrontab.Advanced.Filters
     /// <summary>
     /// Handles the filter instance where the user specifies a * (for any value)
     /// </summary>
-    class AnyFilter : ICronFilter, ITimeFilter
+    public class AnyFilter : ICronFilter, ITimeFilter
     {
         public CrontabFieldKind Kind { get; }
 
