@@ -1,5 +1,5 @@
 {
-  "version": "1.2.3.2-*",
+  "version": "1.2.3.3-*",
   "frameworks": {
     "netstandard1.0": {
       "dependencies": {
