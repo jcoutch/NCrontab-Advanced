@@ -484,6 +484,9 @@ namespace NCrontab.Advanced.Tests
         [TestMethod]
         public void IllegalDates()
         {
+            BadField("* * 0 Feb *", CronStringFormat.Default);
+            BadField("* * 31 0 *", CronStringFormat.Default);
+
             BadField("* * 31 Feb *", CronStringFormat.Default);
             BadField("* * * 31 Feb *", CronStringFormat.WithSeconds);
             BadField("* * 31 Feb * *", CronStringFormat.WithYears);
