@@ -1,10 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>1.2.3.3</VersionPrefix>
+    <Version>1.2.3.3</Version>
+    <FileVersion>1.2.3.3</FileVersion>
+    <Company>Joe Coutcher</Company>
     <TargetFrameworks>netstandard1.0;net46;net451;net45;net40;net35</TargetFrameworks>
     <AssemblyName>NCrontab.Advanced</AssemblyName>
     <PackageId>NCrontab.Advanced</PackageId>
+    <Product>NCrontab.Advanced</Product>
     <RuntimeIdentifiers>win10-x64</RuntimeIdentifiers>
     <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.0' ">$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.0' ">1.6.0</NetStandardImplicitPackageVersion>
