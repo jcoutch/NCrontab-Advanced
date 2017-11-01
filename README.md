@@ -1,5 +1,7 @@
 ﻿# NCrontab Advanced
 
+[![Build status](https://ci.appveyor.com/api/projects/status/kf0q2cp6xx9qf84w?svg=true)](https://ci.appveyor.com/project/jcoutch/ncrontab-advanced)
+
 **If you have any problems, make sure to file an issue here on Github.**
 
 We were looking to implement [NCrontab](https://github.com/atifaziz/NCrontab) for a project, but found it had a few shortcomings:
