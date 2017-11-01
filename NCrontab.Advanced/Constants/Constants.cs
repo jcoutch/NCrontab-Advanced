@@ -8,16 +8,27 @@ namespace NCrontab.Advanced
     {
         public static readonly Dictionary<CrontabFieldKind, int> MaximumDateTimeValues = new Dictionary<CrontabFieldKind, int>
         {
-            { CrontabFieldKind.Second, 60 },
-            { CrontabFieldKind.Minute, 60 },
-            { CrontabFieldKind.Hour, 24 },
-            { CrontabFieldKind.DayOfWeek, 6 },
+            { CrontabFieldKind.Second, 59 },
+            { CrontabFieldKind.Minute, 59 },
+            { CrontabFieldKind.Hour, 23 },
+            { CrontabFieldKind.DayOfWeek, 7 },
             { CrontabFieldKind.Day, 31 },
             { CrontabFieldKind.Month, 12 },
             { CrontabFieldKind.Year, 9999 },
         };
 
-        public static readonly Dictionary<CronStringFormat, int> ExpectedFieldCounts = new Dictionary<CronStringFormat, int>
+		public static readonly Dictionary<CrontabFieldKind, int> MinimumDateTimeValues = new Dictionary<CrontabFieldKind, int>
+		{
+			{ CrontabFieldKind.Second, 0 },
+			{ CrontabFieldKind.Minute, 0 },
+			{ CrontabFieldKind.Hour, 0 },
+			{ CrontabFieldKind.DayOfWeek, 0 },
+			{ CrontabFieldKind.Day, 1 },
+			{ CrontabFieldKind.Month, 1 },
+			{ CrontabFieldKind.Year, 1 },
+		};
+
+		public static readonly Dictionary<CronStringFormat, int> ExpectedFieldCounts = new Dictionary<CronStringFormat, int>
         {
             { CronStringFormat.Default, 5},
             { CronStringFormat.WithYears, 6},

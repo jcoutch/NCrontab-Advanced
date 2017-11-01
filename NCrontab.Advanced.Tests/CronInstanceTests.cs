@@ -65,6 +65,61 @@ namespace NCrontab.Advanced.Tests
             Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse("* * * * * * * *", CronStringFormat.WithSecondsAndYears));
         }
 
+	    [TestMethod]
+	    public void OutOfBoundsValues()
+	    {
+			Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse("-1 * * * * *", CronStringFormat.WithSeconds));
+			Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse("60 * * * * *", CronStringFormat.WithSeconds));
+
+			Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse("* * * * * 0", CronStringFormat.WithYears));
+			Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse("* * * * * 10000", CronStringFormat.WithYears));
+
+			Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse("-1 * * * *", CronStringFormat.Default));
+			Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse("60 * * * *", CronStringFormat.Default));
+
+			Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse("* -1 * * *", CronStringFormat.Default));
+			Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse("* 24 * * *", CronStringFormat.Default));
+
+			Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse("* * 0 * *", CronStringFormat.Default));
+			Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse("* * 32 * *", CronStringFormat.Default));
+
+			Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse("* * * 0 *", CronStringFormat.Default));
+			Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse("* * * 13 *", CronStringFormat.Default));
+
+			Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse("* * * * -1", CronStringFormat.Default));
+			Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse("* * * * 8", CronStringFormat.Default));
+		}
+
+	    [TestMethod]
+	    public void SundayProcessesCorrectly()
+	    {
+			var tests = new[]
+			{
+				new { startTime = "01/01/2016 00:00:00", inputString = "0 0 * * 0", nextOccurence = "03/01/2016 00:00:00", cronStringFormat = CronStringFormat.Default },
+				new { startTime = "01/01/2016 00:00:00", inputString = "0 0 * * 7", nextOccurence = "03/01/2016 00:00:00", cronStringFormat = CronStringFormat.Default },
+			};
+
+			foreach (var test in tests)
+				CronCall(test.startTime, test.inputString, test.nextOccurence, test.cronStringFormat);
+		}
+
+        [TestMethod]
+        public void ThirtyFirstWeekdayForMonthsWithLessThanThirtyDaysProcessesCorrectly()
+        {
+            var tests = new[]
+            {
+                new { startTime = "31/03/2016 00:00:00", inputString = "0 0 31W * *", nextOccurence = "31/05/2016 00:00:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "01/01/2016 00:00:00", inputString = "0 0 31W * *", nextOccurence = "29/01/2016 00:00:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "01/02/2016 00:00:00", inputString = "0 0 31W * *", nextOccurence = "31/03/2016 00:00:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "01/02/2016 00:00:00", inputString = "0 0 30W * *", nextOccurence = "30/03/2016 00:00:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "01/02/2016 00:00:00", inputString = "0 0 29W * *", nextOccurence = "29/02/2016 00:00:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "01/02/2017 00:00:00", inputString = "0 0 29W * *", nextOccurence = "29/03/2017 00:00:00", cronStringFormat = CronStringFormat.Default },
+            };
+
+            foreach (var test in tests)
+                CronCall(test.startTime, test.inputString, test.nextOccurence, test.cronStringFormat);
+        }
+
         [TestMethod]
         public void CannotParseWhenSecondsRequired()
         {

@@ -37,6 +37,10 @@ namespace NCrontab.Advanced.Filters
         /// <returns>True if the value matches the condition, False if it does not match.</returns>
         public bool IsMatch(DateTime value)
         {
+            // If this month doesn't have enough days, skip it (i.e. February has no closest weekday to the 31st, since there is no February 31st.)
+            if (DateTime.DaysInMonth(value.Year, value.Month) < SpecificValue)
+                return false;
+
             var specificDay = new DateTime(value.Year, value.Month, SpecificValue);
 
             DateTime closestWeekday;

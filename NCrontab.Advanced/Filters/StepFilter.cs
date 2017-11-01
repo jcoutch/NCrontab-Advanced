@@ -34,17 +34,24 @@ namespace NCrontab.Advanced.Filters
         /// <param name="kind">The crontab field kind to associate with this filter</param>
         public StepFilter(int start, int step, CrontabFieldKind kind)
         {
-            var maxValue = Constants.MaximumDateTimeValues[kind];
+			var minValue = Constants.MinimumDateTimeValues[kind];
+			var maxValue = Constants.MaximumDateTimeValues[kind];
 
             if (step <= 0 || step > maxValue)
                 throw new CrontabException(string.Format("Steps = {0} is out of bounds for <{1}> field", step, Enum.GetName(typeof(CrontabFieldKind), kind)));
 
-            Start = start;
-            Step = step;
-            Kind = kind;
+			Start = start;
+			Step = step;
+			Kind = kind;
 
-            var filters = new List<SpecificFilter>();
-            for (var evalValue = Start; evalValue <= maxValue; evalValue++)
+
+			// We don't want our loop to necessarily start at the start point,
+			// since values like 0/3 are valid for the StepFilter, but a start of
+			// 0 may not be valid for the SpecificFilter instances
+			var loopStart = Math.Max(start, minValue);
+
+			var filters = new List<SpecificFilter>();
+			for (var evalValue = loopStart; evalValue <= maxValue; evalValue++)
                 if (IsMatch(evalValue))
                     filters.Add(new SpecificFilter(evalValue, Kind));
 

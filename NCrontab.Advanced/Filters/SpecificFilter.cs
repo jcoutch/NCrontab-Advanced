@@ -10,8 +10,11 @@ namespace NCrontab.Advanced.Filters
     /// </summary>
     public class SpecificFilter : ICronFilter, ITimeFilter
     {
-        public CrontabFieldKind Kind { get; }
-        public int SpecificValue { get; }
+		private static readonly int MinYear = DateTime.MinValue.Year;
+		private static readonly int MaxYear = DateTime.MaxValue.Year;
+
+		public CrontabFieldKind Kind { get; }
+        public int SpecificValue { get; private set; }
 
         /// <summary>
         /// Constructs a new RangeFilter instance
@@ -22,9 +25,26 @@ namespace NCrontab.Advanced.Filters
         {
             SpecificValue = specificValue;
             Kind = kind;
+
+	        ValidateBounds(specificValue);
         }
 
-        /// <summary>
+	    private void ValidateBounds(int specificValue)
+	    {
+		    var minimum = Constants.MinimumDateTimeValues[Kind];
+			var maximum = Constants.MaximumDateTimeValues[Kind];
+
+			if (SpecificValue < minimum || SpecificValue > maximum)
+				throw new ArgumentOutOfRangeException(nameof(specificValue), $"{nameof(specificValue)} should be between {minimum} and {maximum} (was {SpecificValue})");
+
+		    if (Kind == CrontabFieldKind.DayOfWeek)
+		    {
+				// This allows Sunday to be represented by both 0 and 7
+				SpecificValue = SpecificValue % 7;
+			}
+		}
+
+	    /// <summary>
         /// Checks if the value is accepted by the filter
         /// </summary>
         /// <param name="value">The value to check</param>
