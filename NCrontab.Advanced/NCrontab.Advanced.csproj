@@ -8,6 +8,7 @@
     <AssemblyName>NCrontab.Advanced</AssemblyName>
     <PackageId>NCrontab.Advanced</PackageId>
     <Product>NCrontab.Advanced</Product>
+    <Description>Cron string parser for .NET</Description>
     <RuntimeIdentifiers>win10-x64</RuntimeIdentifiers>
     <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.0' ">$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.0' ">1.6.0</NetStandardImplicitPackageVersion>
