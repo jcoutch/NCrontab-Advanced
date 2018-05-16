@@ -41,7 +41,7 @@ namespace NCrontab.Advanced.Filters
                 throw new CrontabException("Cannot call Next for Day, Month or DayOfWeek types");
 
             var newValue = (int?) value + 1;
-            if (newValue >= max) newValue = null;
+            if (newValue > max) newValue = null;
 
             return newValue;
         }
