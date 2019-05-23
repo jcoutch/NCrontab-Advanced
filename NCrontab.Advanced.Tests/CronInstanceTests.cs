@@ -277,6 +277,7 @@ namespace NCrontab.Advanced.Tests
                 new { startTime = "20/12/2003 10:00:00", inputString = " * 3/4 * * *", nextOccurence = "20/12/2003 11:00:00", cronStringFormat = CronStringFormat.Default },
                 new { startTime = "20/12/2003 00:30:00", inputString = " * 3   * * *", nextOccurence = "20/12/2003 03:00:00", cronStringFormat = CronStringFormat.Default },
                 new { startTime = "20/12/2003 01:45:00", inputString = "30 3   * * *", nextOccurence = "20/12/2003 03:30:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "20/12/2003 22:55:00", inputString = "*/15 9-23 * * *", nextOccurence = "20/12/2003 23:00:00", cronStringFormat = CronStringFormat.Default },
 
                 // Day of month tests
 
