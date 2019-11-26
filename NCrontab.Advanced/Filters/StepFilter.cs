@@ -21,6 +21,8 @@ namespace NCrontab.Advanced.Filters
 
         private int? FirstCache { get; set; }
 
+        private int? LastCache { get; set; }
+
         /// <summary>
         /// Returns a list of specific filters that represents this step filter
         /// </summary>
@@ -105,6 +107,24 @@ namespace NCrontab.Advanced.Filters
             return newValue;
         }
 
+        public int? Previous(int value)
+        {
+            if (Kind == CrontabFieldKind.Day
+                || Kind == CrontabFieldKind.Month
+                || Kind == CrontabFieldKind.DayOfWeek)
+                throw new CrontabException("Cannot call Previous for Day, Month or DayOfWeek types");
+
+            var min = Constants.MinimumDateTimeValues[Kind];
+
+            var newValue = (int?)value - 1;
+            while (newValue > min && !IsMatch(newValue.Value))
+                newValue--;
+
+            if (newValue <= min) newValue = null;
+
+            return newValue;
+        }
+
         public int First()
         {
             if (FirstCache.HasValue) return FirstCache.Value;
@@ -127,6 +147,31 @@ namespace NCrontab.Advanced.Filters
                 );
 
             FirstCache = newValue;
+            return newValue;
+        }
+
+        public int Last()
+        {
+            if (LastCache.HasValue) return LastCache.Value;
+
+            if (Kind == CrontabFieldKind.Day
+                || Kind == CrontabFieldKind.Month
+                || Kind == CrontabFieldKind.DayOfWeek)
+                throw new CrontabException("Cannot call Last for Day, Month or DayOfWeek types");
+
+            var min = Constants.MinimumDateTimeValues[Kind];
+
+            var newValue = Constants.MaximumDateTimeValues[Kind];
+            while (newValue > min && !IsMatch(newValue))
+                newValue--;
+
+            if (newValue < min)
+                throw new CrontabException(string.Format("Next value for {0} on field {1} could not be found!",
+                    this.ToString(),
+                    Enum.GetName(typeof(CrontabFieldKind), Kind))
+                );
+
+            LastCache = newValue;
             return newValue;
         }
 
