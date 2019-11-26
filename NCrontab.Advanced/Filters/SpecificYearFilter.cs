@@ -24,5 +24,13 @@ namespace NCrontab.Advanced.Filters
 
             return null;
         }
+
+        public override int? Previous(int value)
+        {
+            if (value > SpecificValue)
+                return SpecificValue;
+
+            return null;
+        }
     }
 }
