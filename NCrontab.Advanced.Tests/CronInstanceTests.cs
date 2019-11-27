@@ -278,6 +278,8 @@ namespace NCrontab.Advanced.Tests
                 new { startTime = "20/12/2003 00:30:00", inputString = " * 3   * * *", nextOccurence = "20/12/2003 03:00:00", previousOccurence = "19/12/2003 03:59:00", cronStringFormat = CronStringFormat.Default },
                 new { startTime = "20/12/2003 01:45:00", inputString = "30 3   * * *", nextOccurence = "20/12/2003 03:30:00", previousOccurence = "19/12/2003 03:30:00", cronStringFormat = CronStringFormat.Default },
                 new { startTime = "20/12/2003 22:55:00", inputString = "*/15 9-23 * * *", nextOccurence = "20/12/2003 23:00:00", previousOccurence = "20/12/2003 22:45:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "20/12/2003 09:00:00", inputString = "*/59 * * * *", nextOccurence = "20/12/2003 09:59:00", previousOccurence = "20/12/2003 08:59:00", cronStringFormat = CronStringFormat.Default },
+                new { startTime = "20/12/2003 09:01:00", inputString = "*/20 * * * *", nextOccurence = "20/12/2003 09:20:00", previousOccurence = "20/12/2003 09:00:00", cronStringFormat = CronStringFormat.Default },
 
                 //// Day of month tests
 
