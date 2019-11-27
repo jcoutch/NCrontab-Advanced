@@ -46,6 +46,20 @@ namespace NCrontab.Advanced.Filters
             return newValue;
         }
 
+        public int? Previous(int value)
+        {
+            var min = Constants.MinimumDateTimeValues[Kind];
+            if (Kind == CrontabFieldKind.Day
+                || Kind == CrontabFieldKind.Month
+                || Kind == CrontabFieldKind.DayOfWeek)
+                throw new CrontabException("Cannot call Next for Day, Month or DayOfWeek types");
+
+            var newValue = (int?)value - 1;
+            if (newValue < min) newValue = null;
+
+            return newValue;
+        }
+
         public int First()
         {
             if (Kind == CrontabFieldKind.Day
@@ -54,6 +68,16 @@ namespace NCrontab.Advanced.Filters
                 throw new CrontabException("Cannot call First for Day, Month or DayOfWeek types");
 
             return 0;
+        }
+
+        public int Last()
+        {
+            if (Kind == CrontabFieldKind.Day
+                || Kind == CrontabFieldKind.Month
+                || Kind == CrontabFieldKind.DayOfWeek)
+                throw new CrontabException("Cannot call Last for Day, Month or DayOfWeek types");
+
+            return Constants.MaximumDateTimeValues[Kind];
         }
 
         public override string ToString()
