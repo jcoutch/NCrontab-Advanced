@@ -70,6 +70,15 @@ namespace NCrontab.Advanced
             }
         }
 
+        public IEnumerable<DateTime> GetPreviousOccurrences(DateTime baseTime, DateTime endTime)
+        {
+            for (var occurrence = GetPreviousOccurrence(baseTime, endTime); 
+                occurrence > endTime; 
+                occurrence = GetPreviousOccurrence(occurrence, endTime))
+            {
+                yield return occurrence;
+            }
+        }
 
         private int Increment(IEnumerable<ITimeFilter> filters, int value, int defaultValue, out bool overflow)
         {
