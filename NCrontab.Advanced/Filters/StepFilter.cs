@@ -102,7 +102,7 @@ namespace NCrontab.Advanced.Filters
             while (newValue < max && !IsMatch(newValue.Value))
                 newValue++;
 
-            if (newValue >= max) newValue = null;
+            if (newValue > max) newValue = null;
 
             return newValue;
         }
@@ -120,7 +120,7 @@ namespace NCrontab.Advanced.Filters
             while (newValue > min && !IsMatch(newValue.Value))
                 newValue--;
 
-            if (newValue <= min) newValue = null;
+            if (newValue < min) newValue = null;
 
             return newValue;
         }
