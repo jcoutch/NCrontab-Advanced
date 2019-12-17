@@ -513,7 +513,6 @@ namespace NCrontab.Advanced.Tests
             BadField("* * 30-31 Feb *", CronStringFormat.Default);
         }
 
-        [TestMethod]
         static void BadField(string expression, CronStringFormat format)
         {
             Assert2.Throws<CrontabException>(() => CrontabSchedule.Parse(expression, format));
