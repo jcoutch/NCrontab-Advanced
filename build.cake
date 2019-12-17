@@ -119,6 +119,7 @@ Task("Pack")
             MSBuildSettings = msBuildSettings
         });
     });
+    
 
 Task("Default")
     .IsDependentOn("Pack");
