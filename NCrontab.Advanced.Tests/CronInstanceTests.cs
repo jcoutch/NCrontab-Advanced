@@ -425,7 +425,14 @@ namespace NCrontab.Advanced.Tests
                 new { startTime = "28/02/2003 12:01:00", inputString = "1 12 28 2 *", nextOccurence = "28/02/2004 12:01:00", previousOccurence="28/02/2002 12:01:00", cronStringFormat = CronStringFormat.Default },
                 new { startTime = "29/02/2004 12:01:00", inputString = "1 12 28 2 *", nextOccurence = "28/02/2005 12:01:00", previousOccurence="28/02/2004 12:01:00", cronStringFormat = CronStringFormat.Default },
 
-                // ? filter  tests
+                //// Specific time tests - December 6 2019 at 3am
+
+                new { startTime = "01/07/1984 00:00:00", inputString = "0 0 3 6 DEC ? 2019", nextOccurence = "06/12/2019 03:00:00", previousOccurence="01/01/0001 00:00:00", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+                new { startTime = "06/11/2019 00:00:00", inputString = "0 0 3 6 DEC ? 2019", nextOccurence = "06/12/2019 03:00:00", previousOccurence="01/01/0001 00:00:00", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+                new { startTime = "05/12/2019 00:00:00", inputString = "0 0 3 6 DEC ? 2019", nextOccurence = "06/12/2019 03:00:00", previousOccurence="01/01/0001 00:00:00", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+                new { startTime = "06/12/2019 02:13:05", inputString = "0 0 3 6 DEC ? 2019", nextOccurence = "06/12/2019 03:00:00", previousOccurence="01/01/0001 00:00:00", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+                new { startTime = "06/12/2019 12:00:00", inputString = "0 0 3 6 DEC ? 2019", nextOccurence = "31/12/9999 23:59:59", previousOccurence="06/12/2019 03:00:00", cronStringFormat = CronStringFormat.WithSecondsAndYears },
+                new { startTime = "01/07/2020 00:00:00", inputString = "0 0 3 6 DEC ? 2019", nextOccurence = "31/12/9999 23:59:59", previousOccurence="06/12/2019 03:00:00", cronStringFormat = CronStringFormat.WithSecondsAndYears },
             };
 
             foreach (var test in tests)
