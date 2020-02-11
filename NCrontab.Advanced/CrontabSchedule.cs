@@ -281,7 +281,7 @@ namespace NCrontab.Advanced
 
                 // In instances where the year is filtered, this will speed up the path to get to endValue
                 // (without having to actually go to endValue)
-                if (isYearFormat && yearFilters.Select(x => x.Next(newValue.Year - 1)).All(x => x == null)) return endValue;
+                if (isYearFormat && yearFilters.Select(x => x.Previous(newValue.Year + 1)).All(x => x == null)) return endValue;
 
                 // Ugh...have to do the try/catch again...
                 try { newValue = newValue.AddDays(-1); } catch { return endValue; }
