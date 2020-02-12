@@ -34,7 +34,7 @@ Setup(context =>
     });
 
 
-    nugetVersion = gitVersionInfo.MajorMinorPatch + "-" + gitVersionInfo.PreReleaseLabel + gitVersionInfo.CommitsSinceVersionSourcePadded;
+    nugetVersion = gitVersionInfo.NuGetVersion;
 
     if(BuildSystem.IsRunningOnTeamCity)
         BuildSystem.TeamCity.SetBuildNumber(nugetVersion);
@@ -45,7 +45,7 @@ Setup(context =>
 
 Teardown(context =>
 {
-    Information("Finished running tasks.");
+    Information("Finished running tasks for build v{0}", nugetVersion);
 });
 
 //////////////////////////////////////////////////////////////////////
