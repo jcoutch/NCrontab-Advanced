@@ -21,6 +21,12 @@
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <FrameworkPathOverride Condition="'$(TargetFramework)' == 'net35'">C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v3.5\Profile\Client</FrameworkPathOverride>
+    <Authors>jcoutch</Authors>
+    <PackageLicenseUrl>https://github.com/jcoutch/NCrontab-Advanced/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/jcoutch/NCrontab-Advanced</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/jcoutch/NCrontab-Advanced/master/NCrontab.Advanced/Icons/x-office-calendar.png</PackageIconUrl>
+    <PackageTags>cron crontab ncrontab schedule dates datetime</PackageTags>
+    <PackageDescription>NCrontab-Advanced is intended to be as close of a drop-in replacement for NCrontab as possible, and contains additional features (#, L, W support, as well as support for seconds and years.)</PackageDescription>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
