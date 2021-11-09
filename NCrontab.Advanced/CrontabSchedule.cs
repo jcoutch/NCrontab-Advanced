@@ -282,7 +282,7 @@ namespace NCrontab.Advanced
 
         private static ICronFilter ParseFilter(string filter, CrontabFieldKind kind)
         {
-            var newFilter = filter.ToUpper();
+            var newFilter = filter.ToUpperInvariant();
 
             try
             {
