@@ -72,7 +72,17 @@ namespace NCrontab.Advanced.Filters
             return SpecificValue;
         }
 
+        public virtual int? Previous(int value)
+        {
+            return SpecificValue;
+        }
+
         public int First()
+        {
+            return SpecificValue;
+        }
+
+        public int Last()
         {
             return SpecificValue;
         }
