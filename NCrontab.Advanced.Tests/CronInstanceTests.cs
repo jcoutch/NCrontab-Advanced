@@ -624,6 +624,18 @@ namespace NCrontab.Advanced.Tests
             BadField("* * 3-l2 * * *", CronStringFormat.WithSeconds);
         }
 
+
+        [TestMethod]
+        public void DaysOfTheWeek()
+        {
+            var parser = CrontabSchedule.Parse("* * * * Mon,Tue,Wed,Thu,Fri,Sat,Sun");
+            Assert.AreEqual(7, parser.Filters[CrontabFieldKind.DayOfWeek].Count);
+        }
+
+        [TestMethod]
+        public void DaysOfTheWeekInTurkishCulture()
+         => TestHelpers.ExecuteWithCulture("tr-TR", DaysOfTheWeek);
+
         [TestMethod]
         public void MultipleInstancesTest()
         {
