@@ -8,7 +8,6 @@ on:
       - 'octopus'
   pull_request:
     types: [opened, synchronize, reopened]
-  workflow_dispatch:
 
 jobs:
   build:
