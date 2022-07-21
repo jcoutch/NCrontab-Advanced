@@ -5,9 +5,7 @@ on:
   # Triggers the workflow on pull request events and merges/pushes to main
   push:
     branches:
-      - '**'
-    tags-ignore:
-      - '**'
+      - 'octopus'
   pull_request:
     types: [opened, synchronize, reopened]
   workflow_dispatch:
