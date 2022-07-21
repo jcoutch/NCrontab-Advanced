@@ -1,6 +1,5 @@
 name: Build, Test, Package and Push
 
-# Controls when the action will run. 
 on:
   # Triggers the workflow on pull request events and merges/pushes to main
   push:
