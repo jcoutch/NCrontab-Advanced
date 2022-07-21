@@ -29,7 +29,7 @@ jobs:
         # (for pull_request events we override the /refs/pull/xx/merge branch to the PR's head branch)
         env:
           OCTOVERSION_CurrentBranch: ${{ github.head_ref || github.ref }}
-          # OCTOVERSION_Patch: ${{ github.run_number }}
+          OCTOVERSION_Patch: ${{ github.run_number }}
         run: ./build.sh
         
       - name: Tag release (when not pre-release) 🏷️
