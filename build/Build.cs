@@ -1,5 +1,4 @@
 using Nuke.Common;
-using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
@@ -19,7 +18,6 @@ class Build : NukeBuild
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
-    [GitRepository] readonly GitRepository GitRepository;
     [Solution] readonly Solution Solution;
 
     [Parameter("Test filter expression", Name = "where")] readonly string TestFilter = string.Empty;
