@@ -1,18 +1,11 @@
-using System;
-using System.Linq;
 using Nuke.Common;
-using Nuke.Common.CI;
-using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
-using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.OctoVersion;
 using Nuke.Common.Utilities.Collections;
-using static Nuke.Common.EnvironmentInfo;
 using static Nuke.Common.IO.FileSystemTasks;
-using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 class Build : NukeBuild
@@ -42,14 +35,15 @@ class Build : NukeBuild
         Name = CiBranchNameEnvVariable)]
     string BranchName { get; set; }
 
-    AbsolutePath SourceDirectory => RootDirectory / "source";
-    AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
-    
+    static AbsolutePath SourceDirectory => RootDirectory / "source";
+    static AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
+    static AbsolutePath TestResultsDirectory => RootDirectory / "TestResults";
 
     Target Clean => _ => _
         .Executes(() =>
         {
             SourceDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
+            DeleteDirectory(TestResultsDirectory);
             EnsureCleanDirectory(ArtifactsDirectory);
         });
 
@@ -85,10 +79,8 @@ class Build : NukeBuild
                 .SetFilter(TestFilter)
                 .SetVerbosity(DotNetVerbosity.Normal)
                 .EnableNoBuild()
-                .EnableNoRestore());
-
-            GlobFiles(SourceDirectory, "**/*.trx")
-                .ForEach(x => CopyFileToDirectory(x, ArtifactsDirectory, FileExistsPolicy.Overwrite));
+                .EnableNoRestore()
+                .SetResultsDirectory(TestResultsDirectory));
         });
 
     Target Pack => _ => _
