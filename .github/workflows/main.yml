@@ -16,7 +16,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
@@ -84,4 +84,4 @@ jobs:
           api_key: ${{ secrets.DEPLOY_API_KEY }}
           project: "Ncron.Advanced"
           packages: |
-            Ncron.Advanced:${{ steps.build.outputs.octoversion_fullsemver }}
+            NCrontab.Advanced:${{ steps.build.outputs.octoversion_fullsemver }}
