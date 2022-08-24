@@ -7,10 +7,16 @@ on:
       - 'octopus'
   pull_request:
     types: [opened, synchronize, reopened]
+  schedule:
+    # Daily 5am australian/brisbane time
+    - cron: '0 19 * * *'
+
+env:
+  OCTOVERSION_CurrentBranch: ${{ github.head_ref || github.ref }} # For pull_request events we override the /refs/pull/xx/merge branch to the PR's head branch
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
@@ -20,20 +26,31 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 6.0.x
+      
+      # Adjustment is done prior to Nuke build as OCTOVERSION information is included in the result package.
+      - name: Append OCTOVERSION_CurrentBranch with -nightly (for scheduled)
+        if: github.event_name == 'schedule'
+        run: echo "OCTOVERSION_CurrentBranch=${{ env.OCTOVERSION_CurrentBranch }}-nightly" >> $GITHUB_ENV
 
       - name: Nuke Build 🏗
         id: build
-        shell: bash
-        # Pass branch and patch number to Nuke OctoVersion
-        # (for pull_request events we override the /refs/pull/xx/merge branch to the PR's head branch)
-        env:
-          OCTOVERSION_CurrentBranch: ${{ github.head_ref || github.ref }}
-          OCTOVERSION_Patch: ${{ github.run_number }}
+        shell: bash                
+        env:          
+          OCTOVERSION_Patch: ${{ github.run_number }} # Pass patch number to Nuke OctoVersion
         run: ./build.sh
+
+      - name: Linux unit test report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()    # run this step even if previous step failed
+        with:
+          name: Linux unit test results
+          path: ./TestResults/*.trx
+          reporter: dotnet-trx
+          fail-on-error: true
         
       - name: Tag release (when not pre-release) 🏷️
-        id: github-tag
-        if: ${{ !contains( steps.build.outputs.octoversion_fullsemver, '-' ) }}
+        id: github-tag        
+        if: ${{ github.event_name != 'schedule' && !contains( steps.build.outputs.octoversion_fullsemver, '-' ) }}
         uses: actions/github-script@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -67,4 +84,4 @@ jobs:
           api_key: ${{ secrets.DEPLOY_API_KEY }}
           project: "Ncron.Advanced"
           packages: |
-            Ncron.Advanced:${{ steps.build.outputs.octoversion_fullsemver }}
+            NCrontab.Advanced:${{ steps.build.outputs.octoversion_fullsemver }}
