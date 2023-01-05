@@ -98,7 +98,12 @@ namespace NCrontab.Advanced.Filters
 
             var newValue = (int?) value + 1;
             while (newValue < max && !IsMatch(newValue.Value))
+            {
+                // short circuit, `IsMatch` can never be true
+                if (newValue > End)
+                    newValue = max;
                 newValue++;
+            }
 
             if (newValue > max) newValue = null;
 
@@ -118,7 +123,12 @@ namespace NCrontab.Advanced.Filters
 
             var newValue = 0;
             while (newValue < max && !IsMatch(newValue))
+            {
+                // short circuit, `IsMatch` can never be true
+                if (newValue > End)
+                    newValue = max;
                 newValue++;
+            }
 
             if (newValue > max)
                 throw new CrontabException(string.Format("Next value for {0} on field {1} could not be found!",
