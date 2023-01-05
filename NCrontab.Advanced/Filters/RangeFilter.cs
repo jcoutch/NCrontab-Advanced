@@ -98,7 +98,11 @@ namespace NCrontab.Advanced.Filters
 
             var newValue = (int?) value + 1;
             while (newValue < max && !IsMatch(newValue.Value))
+            {
+                // short circuit, `IsMatch` can never be true
+                if (newValue > End) return null;
                 newValue++;
+            }
 
             if (newValue > max) newValue = null;
 
