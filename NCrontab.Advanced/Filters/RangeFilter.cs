@@ -100,7 +100,8 @@ namespace NCrontab.Advanced.Filters
             while (newValue < max && !IsMatch(newValue.Value))
             {
                 // short circuit, `IsMatch` can never be true
-                if (newValue > End) return null;
+                if (newValue > End)
+                    newValue = max;
                 newValue++;
             }
 
