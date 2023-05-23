@@ -97,23 +97,23 @@ namespace NCrontab.Advanced
                 var secondFilters = Filters[CrontabFieldKind.Second].Where(x => x is ITimeFilter).Cast<ITimeFilter>().ToList();
                 firstSecondValue = secondFilters.Select(x => x.First()).Min();
                 newSeconds = Increment(secondFilters, newValue.Second, firstSecondValue, out overflow);
-                newValue = new DateTime(newValue.Year, newValue.Month, newValue.Day, newValue.Hour, newValue.Minute, newSeconds);
+                newValue = new DateTime(newValue.Year, newValue.Month, newValue.Day, newValue.Hour, newValue.Minute, newSeconds, newValue.Kind);
                 if (!overflow && !IsMatch(newValue))
                 {
                     newSeconds = firstSecondValue;
-                    newValue = new DateTime(newValue.Year, newValue.Month, newValue.Day, newValue.Hour, newValue.Minute, newSeconds);
+                    newValue = new DateTime(newValue.Year, newValue.Month, newValue.Day, newValue.Hour, newValue.Minute, newSeconds, newValue.Kind);
                     overflow = true;
                 }
                 if (!overflow) return MinDate(newValue, endValue);
             }
 
             var newMinutes = Increment(minuteFilters, newValue.Minute + (overflow ? 0 : -1), firstMinuteValue, out overflow);
-            newValue = new DateTime(newValue.Year, newValue.Month, newValue.Day, newValue.Hour, newMinutes, overflow ? firstSecondValue : newSeconds);
+            newValue = new DateTime(newValue.Year, newValue.Month, newValue.Day, newValue.Hour, newMinutes, overflow ? firstSecondValue : newSeconds, newValue.Kind);
             if (!overflow && !IsMatch(newValue))
             {
                 newSeconds = firstSecondValue;
                 newMinutes = firstMinuteValue;
-                newValue = new DateTime(newValue.Year, newValue.Month, newValue.Day, newValue.Hour, newMinutes, firstSecondValue);
+                newValue = new DateTime(newValue.Year, newValue.Month, newValue.Day, newValue.Hour, newMinutes, firstSecondValue, newValue.Kind);
                 overflow = true;
             }
             if (!overflow) return MinDate(newValue, endValue);
@@ -121,11 +121,12 @@ namespace NCrontab.Advanced
             var newHours = Increment(hourFilters, newValue.Hour + (overflow ? 0 : -1), firstHourValue, out overflow);
             newValue = new DateTime(newValue.Year, newValue.Month, newValue.Day, newHours,
                 overflow ? firstMinuteValue : newMinutes,
-                overflow ? firstSecondValue : newSeconds);
+                overflow ? firstSecondValue : newSeconds,
+                newValue.Kind);
 
             if (!overflow && !IsMatch(newValue))
             {
-                newValue = new DateTime(newValue.Year, newValue.Month, newValue.Day, firstHourValue, firstMinuteValue, firstSecondValue);
+                newValue = new DateTime(newValue.Year, newValue.Month, newValue.Day, firstHourValue, firstMinuteValue, firstSecondValue, newValue.Kind);
                 overflow = true;
             }
 
